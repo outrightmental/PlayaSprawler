@@ -1,0 +1,1073 @@
+{
+ "project": "Playa Sprawler",
+ "version": "0.1.0",
+ "generated": "2026-09-08",
+ "classes": {
+  "PS-100": {
+   "payload_kg": 100.0,
+   "frame": {
+    "LC1": {
+     "worst": {
+      "tube_sf_b": 34.65,
+      "tube_sf_s": 40.29,
+      "cord_sf": 11.71,
+      "fabric_sf": 11.43
+     },
+     "max_d_mm": 12.4,
+     "mechanism": false,
+     "members": {
+      "SEAT_RAIL": -646,
+      "CTRL_RAIL": 212,
+      "TOP_RAIL": 10,
+      "SEAT_CROSS": 0,
+      "SEAT_FRONT_EDGE": 175,
+      "REAR_CORD": 223,
+      "XF_1": 0,
+      "XF_2": 0,
+      "XR_1": 16,
+      "XR_2": 16,
+      "LEG_FL": -1237,
+      "LEG_RL": -886,
+      "POLE_L": -668,
+      "POST_L": -394,
+      "SIDE_CORD_L": 768,
+      "FORESTAY_L": 488,
+      "AFTSTAY_L": 0,
+      "BACKSTAY_L": 0,
+      "SIDE_STRAP_L": 153,
+      "SLING_FL": 340,
+      "SLING_RL": 525,
+      "LEG_FR": -1237,
+      "LEG_RR": -886,
+      "POLE_R": -668,
+      "POST_R": -394,
+      "SIDE_CORD_R": 768,
+      "FORESTAY_R": 488,
+      "AFTSTAY_R": 0,
+      "BACKSTAY_R": 0,
+      "SIDE_STRAP_R": 153,
+      "SLING_FR": 340,
+      "SLING_RR": 525
+     }
+    },
+    "LC2": {
+     "worst": {
+      "tube_sf_b": 13.86,
+      "tube_sf_s": 16.12,
+      "cord_sf": 4.68,
+      "fabric_sf": 4.57
+     },
+     "max_d_mm": 31.0,
+     "mechanism": false,
+     "members": {
+      "SEAT_RAIL": -1614,
+      "CTRL_RAIL": 529,
+      "TOP_RAIL": 26,
+      "SEAT_CROSS": 0,
+      "SEAT_FRONT_EDGE": 438,
+      "REAR_CORD": 557,
+      "XF_1": 0,
+      "XF_2": 0,
+      "XR_1": 41,
+      "XR_2": 41,
+      "LEG_FL": -3092,
+      "LEG_RL": -2215,
+      "POLE_L": -1671,
+      "POST_L": -985,
+      "SIDE_CORD_L": 1921,
+      "FORESTAY_L": 1220,
+      "AFTSTAY_L": 0,
+      "BACKSTAY_L": 0,
+      "SIDE_STRAP_L": 383,
+      "SLING_FL": 849,
+      "SLING_RL": 1313,
+      "LEG_FR": -3092,
+      "LEG_RR": -2215,
+      "POLE_R": -1671,
+      "POST_R": -985,
+      "SIDE_CORD_R": 1921,
+      "FORESTAY_R": 1220,
+      "AFTSTAY_R": 0,
+      "BACKSTAY_R": 0,
+      "SIDE_STRAP_R": 383,
+      "SLING_FR": 849,
+      "SLING_RR": 1313
+     }
+    },
+    "LC3": {
+     "worst": {
+      "tube_sf_b": 15.71,
+      "tube_sf_s": 18.27,
+      "cord_sf": 6.01,
+      "fabric_sf": 7.11
+     },
+     "max_d_mm": 42.4,
+     "mechanism": false,
+     "members": {
+      "SEAT_RAIL": -1293,
+      "CTRL_RAIL": 0,
+      "TOP_RAIL": -152,
+      "SEAT_CROSS": 0,
+      "SEAT_FRONT_EDGE": 441,
+      "REAR_CORD": 0,
+      "XF_1": 0,
+      "XF_2": 111,
+      "XR_1": 0,
+      "XR_2": 0,
+      "LEG_FL": -2728,
+      "LEG_RL": -1707,
+      "POLE_L": -1563,
+      "POST_L": -673,
+      "SIDE_CORD_L": 1498,
+      "FORESTAY_L": 1273,
+      "AFTSTAY_L": 0,
+      "BACKSTAY_L": 474,
+      "SIDE_STRAP_L": 843,
+      "SLING_FL": 340,
+      "SLING_RL": 525,
+      "LEG_FR": -2053,
+      "LEG_RR": -2055,
+      "POLE_R": -668,
+      "POST_R": -1252,
+      "SIDE_CORD_R": 1199,
+      "FORESTAY_R": 940,
+      "AFTSTAY_R": 788,
+      "BACKSTAY_R": 0,
+      "SIDE_STRAP_R": 153,
+      "SLING_FR": 340,
+      "SLING_RR": 525
+     }
+    },
+    "LC5": {
+     "worst": {
+      "tube_sf_b": 22.86,
+      "tube_sf_s": 26.58,
+      "cord_sf": 8.2,
+      "fabric_sf": 8.7
+     },
+     "max_d_mm": 26.6,
+     "mechanism": false,
+     "members": {
+      "SEAT_RAIL": -982,
+      "CTRL_RAIL": 234,
+      "TOP_RAIL": -15,
+      "SEAT_CROSS": 0,
+      "SEAT_FRONT_EDGE": 382,
+      "REAR_CORD": 341,
+      "XF_1": 0,
+      "XF_2": 0,
+      "XR_1": 25,
+      "XR_2": 25,
+      "LEG_FL": -1875,
+      "LEG_RL": -1358,
+      "POLE_L": -1002,
+      "POST_L": -611,
+      "SIDE_CORD_L": 0,
+      "FORESTAY_L": 1098,
+      "AFTSTAY_L": 0,
+      "BACKSTAY_L": 0,
+      "SIDE_STRAP_L": 690,
+      "SLING_FL": 340,
+      "SLING_RL": 525,
+      "LEG_FR": -1875,
+      "LEG_RR": -1358,
+      "POLE_R": -1002,
+      "POST_R": -611,
+      "SIDE_CORD_R": 0,
+      "FORESTAY_R": 1098,
+      "AFTSTAY_R": 0,
+      "BACKSTAY_R": 0,
+      "SIDE_STRAP_R": 690,
+      "SLING_FR": 340,
+      "SLING_RR": 525
+     }
+    }
+   },
+   "stability": {
+    "vehicle_kg": 21.689999999999998,
+    "cg_z_mm": 694.4449009778947,
+    "tip_lat_g": 0.4975196729265031,
+    "tip_long_g": 0.47519968759984377,
+    "side_slope_deg": 26.451248601041364,
+    "a_lat_limit_g": 0.25,
+    "margin_vs_tip": 1.9900786917060125,
+    "r_min_at_vmax_m": 2.0135664036445555,
+    "stop_dist_m": 0.8389860015185647,
+    "yaw_rate_rule": "|omega| * |v| <= a_lat_max, omega = (vR - vL) / track"
+   },
+   "v_by_radius": [
+    [
+     0.5,
+     1.1073617295175051
+    ],
+    [
+     1.0,
+     1.5660459763365826
+    ],
+    [
+     1.5,
+     1.9180067778816632
+    ],
+    [
+     2.0,
+     2.2147234590350102
+    ],
+    [
+     3.0,
+     2.2222222222222223
+    ],
+    [
+     5.0,
+     2.2222222222222223
+    ]
+   ],
+   "energy": [
+    {
+     "surface": "playa, hard",
+     "grade": 0.0,
+     "F_N": 23.875578,
+     "p_el_W": 85.79548571428572,
+     "per_wheel_W": 18.94887142857143,
+     "torque_Nm": 1.36389239325,
+     "range_km": 27.16972787779044,
+     "hours": 3.396215984723805,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "playa, hard",
+     "grade": 0.1,
+     "F_N": 143.25346800000003,
+     "p_el_W": 464.7729142857144,
+     "per_wheel_W": 113.6932285714286,
+     "torque_Nm": 8.183354359500003,
+     "range_km": 5.015438568709313,
+     "hours": 0.6269298210886641,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "playa, soft/dusty",
+     "grade": 0.0,
+     "F_N": 71.626734,
+     "p_el_W": 237.38645714285718,
+     "per_wheel_W": 56.846614285714296,
+     "torque_Nm": 4.0916771797500004,
+     "range_km": 9.819599770163803,
+     "hours": 1.2274499712704754,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "playa, soft/dusty",
+     "grade": 0.1,
+     "F_N": 191.004624,
+     "p_el_W": 616.3638857142857,
+     "per_wheel_W": 151.59097142857144,
+     "torque_Nm": 10.911139146,
+     "range_km": 3.7819217738538122,
+     "hours": 0.47274022173172653,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "beach, wet firm",
+     "grade": 0.0,
+     "F_N": 59.688945000000004,
+     "p_el_W": 199.48871428571434,
+     "per_wheel_W": 47.372178571428584,
+     "torque_Nm": 3.4097309831250002,
+     "range_km": 11.685072052053068,
+     "hours": 1.4606340065066334,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "beach, wet firm",
+     "grade": 0.1,
+     "F_N": 179.06683500000003,
+     "p_el_W": 578.466142857143,
+     "per_wheel_W": 142.11653571428576,
+     "torque_Nm": 10.229192949375001,
+     "range_km": 4.029691329014686,
+     "hours": 0.5037114161268358,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "beach, dry loose",
+     "grade": 0.0,
+     "F_N": 238.75578000000002,
+     "p_el_W": 767.9548571428573,
+     "per_wheel_W": 189.48871428571434,
+     "torque_Nm": 13.638923932500001,
+     "range_km": 3.0353867526439418,
+     "hours": 0.3794233440804927,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "beach, dry loose",
+     "grade": 0.1,
+     "F_N": 358.13367000000005,
+     "p_el_W": 1146.932285714286,
+     "per_wheel_W": 284.2330714285715,
+     "torque_Nm": 20.458385898750002,
+     "range_km": 2.03241292361761,
+     "hours": 0.25405161545220123,
+     "torque_ok": false,
+     "power_ok": false
+    }
+   ],
+   "axle": {
+    "F_N": 639.4280624999999,
+    "M_Nm": 28.774262812499995,
+    "sigma_MPa": 226.1514153301075,
+    "tau_MPa": 137.54130884484783,
+    "vm_MPa": 328.47724056937676,
+    "sf": 2.3898154972298675,
+    "sf_target": 1.5
+   }
+  },
+  "PS-125": {
+   "payload_kg": 125.0,
+   "frame": {
+    "LC1": {
+     "worst": {
+      "tube_sf_b": 27.72,
+      "tube_sf_s": 32.23,
+      "cord_sf": 9.37,
+      "fabric_sf": 9.14
+     },
+     "max_d_mm": 15.5,
+     "mechanism": false,
+     "members": {
+      "SEAT_RAIL": -807,
+      "CTRL_RAIL": 264,
+      "TOP_RAIL": 13,
+      "SEAT_CROSS": 0,
+      "SEAT_FRONT_EDGE": 219,
+      "REAR_CORD": 279,
+      "XF_1": 0,
+      "XF_2": 0,
+      "XR_1": 20,
+      "XR_2": 20,
+      "LEG_FL": -1546,
+      "LEG_RL": -1108,
+      "POLE_L": -835,
+      "POST_L": -492,
+      "SIDE_CORD_L": 961,
+      "FORESTAY_L": 610,
+      "AFTSTAY_L": 0,
+      "BACKSTAY_L": 0,
+      "SIDE_STRAP_L": 192,
+      "SLING_FL": 424,
+      "SLING_RL": 656,
+      "LEG_FR": -1546,
+      "LEG_RR": -1108,
+      "POLE_R": -835,
+      "POST_R": -492,
+      "SIDE_CORD_R": 961,
+      "FORESTAY_R": 610,
+      "AFTSTAY_R": 0,
+      "BACKSTAY_R": 0,
+      "SIDE_STRAP_R": 192,
+      "SLING_FR": 424,
+      "SLING_RR": 656
+     }
+    },
+    "LC2": {
+     "worst": {
+      "tube_sf_b": 11.09,
+      "tube_sf_s": 12.89,
+      "cord_sf": 3.75,
+      "fabric_sf": 3.66
+     },
+     "max_d_mm": 38.8,
+     "mechanism": false,
+     "members": {
+      "SEAT_RAIL": -2017,
+      "CTRL_RAIL": 661,
+      "TOP_RAIL": 32,
+      "SEAT_CROSS": 0,
+      "SEAT_FRONT_EDGE": 548,
+      "REAR_CORD": 696,
+      "XF_1": 0,
+      "XF_2": 0,
+      "XR_1": 51,
+      "XR_2": 51,
+      "LEG_FL": -3865,
+      "LEG_RL": -2769,
+      "POLE_L": -2088,
+      "POST_L": -1231,
+      "SIDE_CORD_L": 2401,
+      "FORESTAY_L": 1525,
+      "AFTSTAY_L": 0,
+      "BACKSTAY_L": 0,
+      "SIDE_STRAP_L": 479,
+      "SLING_FL": 1061,
+      "SLING_RL": 1641,
+      "LEG_FR": -3865,
+      "LEG_RR": -2769,
+      "POLE_R": -2088,
+      "POST_R": -1231,
+      "SIDE_CORD_R": 2401,
+      "FORESTAY_R": 1525,
+      "AFTSTAY_R": 0,
+      "BACKSTAY_R": 0,
+      "SIDE_STRAP_R": 479,
+      "SLING_FR": 1061,
+      "SLING_RR": 1641
+     }
+    },
+    "LC3": {
+     "worst": {
+      "tube_sf_b": 12.57,
+      "tube_sf_s": 14.62,
+      "cord_sf": 4.81,
+      "fabric_sf": 5.69
+     },
+     "max_d_mm": 53.0,
+     "mechanism": false,
+     "members": {
+      "SEAT_RAIL": -1617,
+      "CTRL_RAIL": 0,
+      "TOP_RAIL": -190,
+      "SEAT_CROSS": 0,
+      "SEAT_FRONT_EDGE": 551,
+      "REAR_CORD": 0,
+      "XF_1": 0,
+      "XF_2": 139,
+      "XR_1": 0,
+      "XR_2": 0,
+      "LEG_FL": -3409,
+      "LEG_RL": -2134,
+      "POLE_L": -1954,
+      "POST_L": -842,
+      "SIDE_CORD_L": 1872,
+      "FORESTAY_L": 1591,
+      "AFTSTAY_L": 0,
+      "BACKSTAY_L": 592,
+      "SIDE_STRAP_L": 1054,
+      "SLING_FL": 424,
+      "SLING_RL": 656,
+      "LEG_FR": -2567,
+      "LEG_RR": -2569,
+      "POLE_R": -835,
+      "POST_R": -1565,
+      "SIDE_CORD_R": 1498,
+      "FORESTAY_R": 1175,
+      "AFTSTAY_R": 984,
+      "BACKSTAY_R": 0,
+      "SIDE_STRAP_R": 192,
+      "SLING_FR": 424,
+      "SLING_RR": 656
+     }
+    },
+    "LC5": {
+     "worst": {
+      "tube_sf_b": 18.29,
+      "tube_sf_s": 21.27,
+      "cord_sf": 6.56,
+      "fabric_sf": 6.96
+     },
+     "max_d_mm": 33.2,
+     "mechanism": false,
+     "members": {
+      "SEAT_RAIL": -1227,
+      "CTRL_RAIL": 293,
+      "TOP_RAIL": -19,
+      "SEAT_CROSS": 0,
+      "SEAT_FRONT_EDGE": 477,
+      "REAR_CORD": 427,
+      "XF_1": 0,
+      "XF_2": 0,
+      "XR_1": 32,
+      "XR_2": 32,
+      "LEG_FL": -2343,
+      "LEG_RL": -1697,
+      "POLE_L": -1253,
+      "POST_L": -764,
+      "SIDE_CORD_L": 0,
+      "FORESTAY_L": 1373,
+      "AFTSTAY_L": 0,
+      "BACKSTAY_L": 0,
+      "SIDE_STRAP_L": 862,
+      "SLING_FL": 424,
+      "SLING_RL": 656,
+      "LEG_FR": -2343,
+      "LEG_RR": -1697,
+      "POLE_R": -1253,
+      "POST_R": -764,
+      "SIDE_CORD_R": 0,
+      "FORESTAY_R": 1373,
+      "AFTSTAY_R": 0,
+      "BACKSTAY_R": 0,
+      "SIDE_STRAP_R": 862,
+      "SLING_FR": 424,
+      "SLING_RR": 656
+     }
+    }
+   },
+   "stability": {
+    "vehicle_kg": 21.689999999999998,
+    "cg_z_mm": 709.0258367986911,
+    "tip_lat_g": 0.48728830751776325,
+    "tip_long_g": 0.4654273270068361,
+    "side_slope_deg": 25.979432722634094,
+    "a_lat_limit_g": 0.25,
+    "margin_vs_tip": 1.949153230071053,
+    "r_min_at_vmax_m": 2.0135664036445555,
+    "stop_dist_m": 0.8389860015185647,
+    "yaw_rate_rule": "|omega| * |v| <= a_lat_max, omega = (vR - vL) / track"
+   },
+   "v_by_radius": [
+    [
+     0.5,
+     1.1073617295175051
+    ],
+    [
+     1.0,
+     1.5660459763365826
+    ],
+    [
+     1.5,
+     1.9180067778816632
+    ],
+    [
+     2.0,
+     2.2147234590350102
+    ],
+    [
+     3.0,
+     2.2222222222222223
+    ],
+    [
+     5.0,
+     2.2222222222222223
+    ]
+   ],
+   "energy": [
+    {
+     "surface": "playa, hard",
+     "grade": 0.0,
+     "F_N": 28.780578000000002,
+     "p_el_W": 101.3669142857143,
+     "per_wheel_W": 22.841728571428575,
+     "torque_Nm": 1.64409051825,
+     "range_km": 22.996063522558217,
+     "hours": 2.874507940319777,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "playa, hard",
+     "grade": 0.1,
+     "F_N": 172.683468,
+     "p_el_W": 558.2014857142858,
+     "per_wheel_W": 137.05037142857145,
+     "torque_Nm": 9.864543109500001,
+     "range_km": 4.175983152422381,
+     "hours": 0.5219978940527976,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "playa, soft/dusty",
+     "grade": 0.0,
+     "F_N": 86.341734,
+     "p_el_W": 284.1007428571429,
+     "per_wheel_W": 68.52518571428573,
+     "torque_Nm": 4.932271554750001,
+     "range_km": 8.204976785900694,
+     "hours": 1.0256220982375868,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "playa, soft/dusty",
+     "grade": 0.1,
+     "F_N": 230.24462400000002,
+     "p_el_W": 740.9353142857144,
+     "per_wheel_W": 182.7338285714286,
+     "torque_Nm": 13.152724146,
+     "range_km": 3.1460776063119598,
+     "hours": 0.39325970078899497,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "beach, wet firm",
+     "grade": 0.0,
+     "F_N": 71.951445,
+     "p_el_W": 238.41728571428578,
+     "per_wheel_W": 57.104321428571446,
+     "torque_Nm": 4.110226295625001,
+     "range_km": 9.77714343578875,
+     "hours": 1.2221429294735937,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "beach, wet firm",
+     "grade": 0.1,
+     "F_N": 215.85433500000005,
+     "p_el_W": 695.2518571428574,
+     "per_wheel_W": 171.31296428571434,
+     "torque_Nm": 12.330678886875003,
+     "range_km": 3.35279938636831,
+     "hours": 0.41909992329603873,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "beach, dry loose",
+     "grade": 0.0,
+     "F_N": 287.80578,
+     "p_el_W": 923.6691428571431,
+     "per_wheel_W": 228.41728571428578,
+     "torque_Nm": 16.440905182500003,
+     "range_km": 2.523674216061285,
+     "hours": 0.31545927700766063,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "beach, dry loose",
+     "grade": 0.1,
+     "F_N": 431.7086700000001,
+     "p_el_W": 1380.5037142857148,
+     "per_wheel_W": 342.6259285714287,
+     "torque_Nm": 24.661357773750005,
+     "range_km": 1.688543084584239,
+     "hours": 0.21106788557302988,
+     "torque_ok": false,
+     "power_ok": false
+    }
+   ],
+   "axle": {
+    "F_N": 792.7093125,
+    "M_Nm": 35.671919062499995,
+    "sigma_MPa": 280.3635678207844,
+    "tau_MPa": 137.54130884484783,
+    "vm_MPa": 367.90836505502426,
+    "sf": 2.133683478174234,
+    "sf_target": 1.5
+   }
+  },
+  "PS-150": {
+   "payload_kg": 150.0,
+   "frame": {
+    "LC1": {
+     "worst": {
+      "tube_sf_b": 23.1,
+      "tube_sf_s": 26.86,
+      "cord_sf": 7.81,
+      "fabric_sf": 7.62
+     },
+     "max_d_mm": 18.6,
+     "mechanism": false,
+     "members": {
+      "SEAT_RAIL": -968,
+      "CTRL_RAIL": 317,
+      "TOP_RAIL": 15,
+      "SEAT_CROSS": 0,
+      "SEAT_FRONT_EDGE": 263,
+      "REAR_CORD": 334,
+      "XF_1": 0,
+      "XF_2": 0,
+      "XR_1": 25,
+      "XR_2": 25,
+      "LEG_FL": -1855,
+      "LEG_RL": -1329,
+      "POLE_L": -1002,
+      "POST_L": -591,
+      "SIDE_CORD_L": 1153,
+      "FORESTAY_L": 732,
+      "AFTSTAY_L": 0,
+      "BACKSTAY_L": 0,
+      "SIDE_STRAP_L": 230,
+      "SLING_FL": 509,
+      "SLING_RL": 788,
+      "LEG_FR": -1855,
+      "LEG_RR": -1329,
+      "POLE_R": -1002,
+      "POST_R": -591,
+      "SIDE_CORD_R": 1153,
+      "FORESTAY_R": 732,
+      "AFTSTAY_R": 0,
+      "BACKSTAY_R": 0,
+      "SIDE_STRAP_R": 230,
+      "SLING_FR": 509,
+      "SLING_RR": 788
+     }
+    },
+    "LC2": {
+     "worst": {
+      "tube_sf_b": 9.24,
+      "tube_sf_s": 10.74,
+      "cord_sf": 3.12,
+      "fabric_sf": 3.05
+     },
+     "max_d_mm": 46.5,
+     "mechanism": false,
+     "members": {
+      "SEAT_RAIL": -2421,
+      "CTRL_RAIL": 793,
+      "TOP_RAIL": 38,
+      "SEAT_CROSS": 0,
+      "SEAT_FRONT_EDGE": 657,
+      "REAR_CORD": 836,
+      "XF_1": 0,
+      "XF_2": 0,
+      "XR_1": 61,
+      "XR_2": 61,
+      "LEG_FL": -4638,
+      "LEG_RL": -3323,
+      "POLE_L": -2506,
+      "POST_L": -1477,
+      "SIDE_CORD_L": 2882,
+      "FORESTAY_L": 1830,
+      "AFTSTAY_L": 0,
+      "BACKSTAY_L": 0,
+      "SIDE_STRAP_L": 575,
+      "SLING_FL": 1273,
+      "SLING_RL": 1969,
+      "LEG_FR": -4638,
+      "LEG_RR": -3323,
+      "POLE_R": -2506,
+      "POST_R": -1477,
+      "SIDE_CORD_R": 2882,
+      "FORESTAY_R": 1830,
+      "AFTSTAY_R": 0,
+      "BACKSTAY_R": 0,
+      "SIDE_STRAP_R": 575,
+      "SLING_FR": 1273,
+      "SLING_RR": 1969
+     }
+    },
+    "LC3": {
+     "worst": {
+      "tube_sf_b": 10.48,
+      "tube_sf_s": 12.18,
+      "cord_sf": 4.01,
+      "fabric_sf": 4.74
+     },
+     "max_d_mm": 63.7,
+     "mechanism": false,
+     "members": {
+      "SEAT_RAIL": -1940,
+      "CTRL_RAIL": 0,
+      "TOP_RAIL": -227,
+      "SEAT_CROSS": 0,
+      "SEAT_FRONT_EDGE": 661,
+      "REAR_CORD": 0,
+      "XF_1": 0,
+      "XF_2": 166,
+      "XR_1": 0,
+      "XR_2": 0,
+      "LEG_FL": -4091,
+      "LEG_RL": -2560,
+      "POLE_L": -2344,
+      "POST_L": -1010,
+      "SIDE_CORD_L": 2247,
+      "FORESTAY_L": 1909,
+      "AFTSTAY_L": 0,
+      "BACKSTAY_L": 711,
+      "SIDE_STRAP_L": 1265,
+      "SLING_FL": 509,
+      "SLING_RL": 788,
+      "LEG_FR": -3080,
+      "LEG_RR": -3083,
+      "POLE_R": -1002,
+      "POST_R": -1877,
+      "SIDE_CORD_R": 1798,
+      "FORESTAY_R": 1409,
+      "AFTSTAY_R": 1181,
+      "BACKSTAY_R": 0,
+      "SIDE_STRAP_R": 230,
+      "SLING_FR": 509,
+      "SLING_RR": 788
+     }
+    },
+    "LC5": {
+     "worst": {
+      "tube_sf_b": 15.24,
+      "tube_sf_s": 17.72,
+      "cord_sf": 5.46,
+      "fabric_sf": 5.8
+     },
+     "max_d_mm": 39.9,
+     "mechanism": false,
+     "members": {
+      "SEAT_RAIL": -1472,
+      "CTRL_RAIL": 352,
+      "TOP_RAIL": -23,
+      "SEAT_CROSS": 0,
+      "SEAT_FRONT_EDGE": 572,
+      "REAR_CORD": 512,
+      "XF_1": 0,
+      "XF_2": 0,
+      "XR_1": 38,
+      "XR_2": 38,
+      "LEG_FL": -2812,
+      "LEG_RL": -2036,
+      "POLE_L": -1504,
+      "POST_L": -917,
+      "SIDE_CORD_L": 0,
+      "FORESTAY_L": 1647,
+      "AFTSTAY_L": 0,
+      "BACKSTAY_L": 0,
+      "SIDE_STRAP_L": 1035,
+      "SLING_FL": 509,
+      "SLING_RL": 788,
+      "LEG_FR": -2812,
+      "LEG_RR": -2036,
+      "POLE_R": -1504,
+      "POST_R": -917,
+      "SIDE_CORD_R": 0,
+      "FORESTAY_R": 1647,
+      "AFTSTAY_R": 0,
+      "BACKSTAY_R": 0,
+      "SIDE_STRAP_R": 1035,
+      "SLING_FR": 509,
+      "SLING_RR": 788
+     }
+    }
+   },
+   "stability": {
+    "vehicle_kg": 21.689999999999998,
+    "cg_z_mm": 719.3604752752053,
+    "tip_lat_g": 0.4802877164857053,
+    "tip_long_g": 0.4587408001165926,
+    "side_slope_deg": 25.654402353819016,
+    "a_lat_limit_g": 0.25,
+    "margin_vs_tip": 1.9211508659428211,
+    "r_min_at_vmax_m": 2.0135664036445555,
+    "stop_dist_m": 0.8389860015185647,
+    "yaw_rate_rule": "|omega| * |v| <= a_lat_max, omega = (vR - vL) / track"
+   },
+   "v_by_radius": [
+    [
+     0.5,
+     1.1073617295175051
+    ],
+    [
+     1.0,
+     1.5660459763365826
+    ],
+    [
+     1.5,
+     1.9180067778816632
+    ],
+    [
+     2.0,
+     2.2147234590350102
+    ],
+    [
+     3.0,
+     2.2222222222222223
+    ],
+    [
+     5.0,
+     2.2222222222222223
+    ]
+   ],
+   "energy": [
+    {
+     "surface": "playa, hard",
+     "grade": 0.0,
+     "F_N": 33.685578,
+     "p_el_W": 116.93834285714287,
+     "per_wheel_W": 26.734585714285718,
+     "torque_Nm": 1.9242886432500002,
+     "range_km": 19.933923664778654,
+     "hours": 2.4917404580973317,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "playa, hard",
+     "grade": 0.1,
+     "F_N": 202.113468,
+     "p_el_W": 651.6300571428573,
+     "per_wheel_W": 160.4075142857143,
+     "torque_Nm": 11.545731859500002,
+     "range_km": 3.577244441763012,
+     "hours": 0.4471555552203765,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "playa, soft/dusty",
+     "grade": 0.0,
+     "F_N": 101.05673399999999,
+     "p_el_W": 330.81502857142857,
+     "per_wheel_W": 80.20375714285714,
+     "torque_Nm": 5.77286592975,
+     "range_km": 7.0463546050680375,
+     "hours": 0.8807943256335047,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "playa, soft/dusty",
+     "grade": 0.1,
+     "F_N": 269.484624,
+     "p_el_W": 865.506742857143,
+     "per_wheel_W": 213.87668571428574,
+     "torque_Nm": 15.394309146000001,
+     "range_km": 2.693266134825193,
+     "hours": 0.33665826685314915,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "beach, wet firm",
+     "grade": 0.0,
+     "F_N": 84.21394500000001,
+     "p_el_W": 277.3458571428572,
+     "per_wheel_W": 66.8364642857143,
+     "torque_Nm": 4.810721608125001,
+     "range_km": 8.404812763434617,
+     "hours": 1.050601595429327,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "beach, wet firm",
+     "grade": 0.1,
+     "F_N": 252.64183500000004,
+     "p_el_W": 812.0375714285716,
+     "per_wheel_W": 200.5093928571429,
+     "torque_Nm": 14.432164824375002,
+     "range_km": 2.870606092645607,
+     "hours": 0.3588257615807009,
+     "torque_ok": true,
+     "power_ok": true
+    },
+    {
+     "surface": "beach, dry loose",
+     "grade": 0.0,
+     "F_N": 336.85578000000004,
+     "p_el_W": 1079.3834285714288,
+     "per_wheel_W": 267.3458571428572,
+     "torque_Nm": 19.242886432500004,
+     "range_km": 2.159603286744125,
+     "hours": 0.26995041084301563,
+     "torque_ok": true,
+     "power_ok": false
+    },
+    {
+     "surface": "beach, dry loose",
+     "grade": 0.1,
+     "F_N": 505.2836700000001,
+     "p_el_W": 1614.0751428571432,
+     "per_wheel_W": 401.0187857142858,
+     "torque_Nm": 28.864329648750005,
+     "range_km": 1.4441954640808896,
+     "hours": 0.1805244330101112,
+     "torque_ok": false,
+     "power_ok": false
+    }
+   ],
+   "axle": {
+    "F_N": 945.9905625,
+    "M_Nm": 42.5695753125,
+    "sigma_MPa": 334.5757203114612,
+    "tau_MPa": 137.54130884484783,
+    "vm_MPa": 410.72344410587834,
+    "sf": 1.9112617291883605,
+    "sf_target": 1.5
+   }
+  }
+ },
+ "packing": {
+  "bag_inner": [
+   640.0,
+   430.0,
+   430.0
+  ],
+  "linear_in": 61.417322834645674,
+  "stack_len": 540.0,
+  "wheel_fits_inflated": false,
+  "wheel_fits_deflated": true,
+  "leftover_len": 100.0,
+  "longest_segment": 376.0319135392633,
+  "tubes_fit": true,
+  "void_L": 31.98759868246047,
+  "total_kg": 22.49,
+  "limit_kg": 22.6796185,
+  "margin_kg": 0.1896185000000017,
+  "margin_pct": 0.8360744692420716,
+  "ok": true,
+  "segments": [
+   [
+    "SEAT_RAIL",
+    360.0,
+    1,
+    360.0
+   ],
+   [
+    "CTRL_RAIL",
+    560.0,
+    2,
+    280.0
+   ],
+   [
+    "TOP_RAIL",
+    460.0,
+    2,
+    230.0
+   ],
+   [
+    "LEG_FL",
+    376.0319135392633,
+    1,
+    376.0319135392633
+   ],
+   [
+    "LEG_RL",
+    376.0319135392633,
+    1,
+    376.0319135392633
+   ],
+   [
+    "POLE_L",
+    490.5099387372289,
+    2,
+    245.25496936861444
+   ],
+   [
+    "POST_L",
+    161.55494421403512,
+    1,
+    161.55494421403512
+   ],
+   [
+    "LEG_FR",
+    376.0319135392633,
+    1,
+    376.0319135392633
+   ],
+   [
+    "LEG_RR",
+    376.0319135392633,
+    1,
+    376.0319135392633
+   ],
+   [
+    "POLE_R",
+    490.5099387372289,
+    2,
+    245.25496936861444
+   ],
+   [
+    "POST_R",
+    161.55494421403512,
+    1,
+    161.55494421403512
+   ]
+  ]
+ }
+}

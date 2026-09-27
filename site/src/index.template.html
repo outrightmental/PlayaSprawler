@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playa Sprawler — open-source personal mobility for the playa and the beach</title>
+<meta name="description" content="An open-source, one-bag, four-identical-wheel-module mobility vehicle for Black Rock City and Ocean Beach, with a rating code built into every part. Analysis, CAD, protocol and fleet method.">
+<meta property="og:title" content="Playa Sprawler">
+<meta property="og:description" content="Open-source personal mobility optimized for accessibility and maintainability.">
+<meta property="og:url" content="https://playasprawler.outright.io/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f7f6f2; --paper-2:#eeece5; --ink:#15171c; --ink-2:#4a4e58; --ink-3:#8a8f9a; --line:#d9d6cc;
+  --flag:#f0561b; --flag-ink:#b93d0e; --data:#1f5fa8; --data-2:#dbe7f7; --ok:#1d8a4a; --warn:#b98400;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace; --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --max:1120px; --gutter:clamp(16px,4vw,40px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(var(--line) .8px,transparent .8px);background-size:22px 22px}
+a{color:var(--data);text-decoration:none;border-bottom:1px solid transparent}a:hover{border-bottom-color:currentColor}
+h1,h2,h3{font-weight:900;letter-spacing:-.02em;line-height:1.05;margin:0}
+h2{font-size:clamp(28px,4vw,44px)}h3{font-size:20px;font-weight:700;letter-spacing:-.01em;margin:26px 0 8px}
+p{margin:.6em 0;max-width:68ch}
+code,.mono{font-family:var(--mono);font-size:.86em}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+/* top bar */
+.bar{position:sticky;top:0;z-index:20;background:rgba(247,246,242,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:20px;height:52px}
+.brand{font-weight:900;letter-spacing:-.02em;font-size:18px;color:var(--ink);white-space:nowrap}
+.brand b{color:var(--flag)}
+.nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
+.nav a{font-family:var(--mono);font-size:12px;color:var(--ink-2);padding:6px 9px;border-radius:4px;white-space:nowrap;border:0}
+.nav a:hover{background:var(--paper-2);color:var(--ink)}
+/* sections */
+section{padding:72px 0 40px;border-top:1px solid var(--line)}
+.kicker{font-family:var(--mono);font-size:12px;color:var(--flag-ink);letter-spacing:.04em;margin-bottom:12px}
+.kicker::before{content:"";display:inline-block;width:22px;height:2px;background:var(--flag);vertical-align:middle;margin-right:10px}
+.lead{font-size:clamp(19px,2.2vw,23px);line-height:1.4;max-width:60ch;color:var(--ink);margin:18px 0}
+.grid{display:grid;gap:18px}.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 20px}
+.card h3{margin-top:0}
+.stat{display:flex;flex-direction:column;gap:2px;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:8px}
+.stat .v{font-size:32px;font-weight:900;letter-spacing:-.03em;line-height:1}.stat .v small{font-size:15px;font-weight:500;color:var(--ink-2);margin-left:4px}
+.stat .l{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.stat.flag .v{color:var(--flag)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}th{font-family:var(--mono);font-size:12px;color:var(--ink-2);font-weight:500;background:var(--paper-2)}
+tr:last-child td{border-bottom:0}td.n,th.n{text-align:right;font-family:var(--mono);font-size:13.5px}
+.pass{color:var(--ok);font-weight:700}.fail{color:var(--flag-ink);font-weight:700}.warn{color:var(--warn);font-weight:700}
+.tag{display:inline-block;font-family:var(--mono);font-size:11.5px;padding:2px 7px;border-radius:3px;background:var(--data-2);color:var(--data)}
+.tag.flag{background:#fde3d8;color:var(--flag-ink)}.tag.ok{background:#dcf2e4;color:var(--ok)}
+.btn{font:600 13px var(--mono);background:var(--ink);color:#fff;border:0;border-radius:5px;padding:9px 13px;cursor:pointer}
+.btn.alt{background:#fff;color:var(--ink);border:1px solid var(--ink)}.btn.flag{background:var(--flag)}
+.btn:disabled{opacity:.4;cursor:default}
+select,input[type=range]{font:14px var(--mono)}
+.note{font-size:14px;color:var(--ink-2)}
+.small{font-size:13.5px;color:var(--ink-2)}
+ol.src{font-size:14px;padding-left:22px}ol.src li{margin:6px 0;word-break:break-word}
+sup a{font-family:var(--mono);font-size:11px;color:var(--flag-ink);border:0}
+/* hero */
+.hero{padding:56px 0 30px;border-top:0}
+.hero h1{font-size:clamp(38px,5.4vw,66px);max-width:12ch}
+.hero h1 span{color:var(--flag)}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr}}
+.demo{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;position:relative}
+.demo svg{width:100%;height:auto;display:block}
+.ticker{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);height:76px;overflow:hidden;border-top:1px solid var(--line);margin-top:8px;padding-top:6px;line-height:1.55}
+.ticker div{white-space:nowrap}
+.ticker b{color:var(--data);font-weight:600}.ticker i{color:var(--flag-ink);font-style:normal}
+.modebadge{position:absolute;top:16px;left:16px;font:700 12px var(--mono);padding:4px 9px;border-radius:4px;background:var(--ok);color:#fff;letter-spacing:.06em}
+.modebadge.stop{background:var(--flag)}.modebadge.crawl{background:var(--warn)}
+.tube{stroke:var(--ink);stroke-width:5;stroke-linecap:round}.cord{stroke:var(--data);stroke-width:1.4;stroke-dasharray:4 3}
+.fab{fill:none;stroke:var(--flag);stroke-width:3;stroke-linecap:round}
+.joint{fill:#fff;stroke:var(--ink);stroke-width:2}
+.tire{fill:#fff;stroke:var(--ink);stroke-width:4}.rim{fill:none;stroke:var(--ink-3);stroke-width:2}.brick{fill:var(--paper-2);stroke:var(--ink);stroke-width:1.5}
+.swap-out{animation:swapout 9s infinite}.swap-in{animation:swapin 9s infinite}
+@keyframes swapout{0%,38%{transform:translate(0,0);opacity:1}50%{transform:translate(-140px,30px);opacity:0}100%{transform:translate(-140px,30px);opacity:0}}
+@keyframes swapin{0%,52%{transform:translate(-140px,30px);opacity:0}64%,100%{transform:translate(0,0);opacity:1}}
+/* bus sim */
+.sim{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}@media(max-width:860px){.sim{grid-template-columns:1fr}}
+.wheels{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wheel{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fff;font-family:var(--mono);font-size:12px}
+.wheel .pos{font-weight:700;font-size:14px}.wheel .bar{height:10px;background:var(--paper-2);border-radius:5px;margin:8px 0;overflow:hidden}
+.wheel .bar i{display:block;height:100%;background:var(--data);width:0;transition:width .12s linear}
+.wheel.gone{opacity:.35;border-style:dashed}
+.log{font-family:var(--mono);font-size:12px;background:#15171c;color:#d8dbe2;border-radius:8px;padding:12px;height:280px;overflow:auto;line-height:1.5}
+.log .t{color:#8a8f9a}.log .e{color:#ffb38a}.log .m{color:#8fd3ff}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.slider{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px}
+/* bars */
+.bars{display:grid;gap:6px;font-family:var(--mono);font-size:12.5px}
+.bars .row{display:grid;grid-template-columns:200px 1fr 70px;gap:10px;align-items:center}
+.bars .b{height:14px;background:var(--paper-2);border-radius:3px;overflow:hidden;position:relative}
+.bars .b i{position:absolute;left:0;top:0;bottom:0;background:var(--data);border-radius:3px}
+.bars .b i.flag{background:var(--flag)}
+@media(max-width:600px){.bars .row{grid-template-columns:120px 1fr 60px}}
+/* rollout */
+.stages{display:grid;gap:12px}
+.stage{display:grid;grid-template-columns:70px 1fr;gap:14px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.stage .n{font:900 26px var(--sans);color:var(--flag);letter-spacing:-.03em}
+.stage .gate{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);margin-top:6px}
+footer{padding:40px 0 60px;font-size:13.5px;color:var(--ink-2)}
+.hideoverflow{overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="bar"><div class="wrap">
+  <a class="brand" href="#top">Playa <b>Sprawler</b></a>
+  <nav class="nav">
+    <a href="#constraint">01 Constraint</a><a href="#system">02 System</a><a href="#evidence">03 Evidence</a><a href="#rating">04 Rating code</a>
+    <a href="#modules">05 Modules</a><a href="#sim">06 Simulator</a><a href="#pack">07 Packing</a><a href="#fleet">08 Fleet</a><a href="#rollout">09 Rollout</a><a href="#caveats">10 Caveats</a><a href="#sources">Sources</a>
+  </nav>
+</div></div>
+
+<section class="hero" id="top"><div class="wrap">
+  <div class="hero-grid">
+    <div>
+      <div class="kicker">open-source personal mobility · v<span data-v="version"></span> · analysis, CAD, protocol, fleet method</div>
+      <h1>Four wheels. One bag. <span>Any</span> of them, anywhere.</h1>
+      <p class="lead">A camp chair on four identical, hot-swappable, self-powered wheel modules — packed into one piece of Burner Express luggage, rated to the rider's mass down to every tube, joint and cord, and repaired by a community fleet in under a minute.</p>
+      <div class="grid g3" style="margin-top:22px">
+        <div class="stat flag"><span class="v" data-v="bag_lb"></span><span class="l">lb — the whole vehicle, in one bag</span></div>
+        <div class="stat"><span class="v">4<small>× W</small></span><span class="l">identical wheel modules, any dock</span></div>
+        <div class="stat"><span class="v" data-v="timeout"></span><span class="l">ms to a stop when a signal dies</span></div>
+      </div>
+      <p class="small" style="margin-top:16px">Sources: <a href="https://github.com/outrightmental/PlayaSprawler">github.com/outrightmental/PlayaSprawler</a> · CERN-OHL-S / Apache-2.0 / CC-BY-SA · structured after <a href="https://boardingflow.outright.io/">BoardingFlow</a>.</p>
+    </div>
+    <div class="demo" id="hero-demo">
+      <div class="modebadge" id="hero-mode">RUN</div>
+      <svg id="hero-svg" viewBox="0 0 560 360" aria-label="Side view of the vehicle with a rear wheel module being hot-swapped"></svg>
+      <div class="ticker" id="hero-ticker"></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="constraint"><div class="wrap">
+  <div class="kicker">§01 · the constraint that designed the vehicle</div>
+  <h2>It has to ride the bus.</h2>
+  <p class="lead">The Burner Express bus to Black Rock City allows two luggage items per ticket, each at most 62 linear inches and 50 lb.<sup><a href="#sources">1</a></sup> Everything else — wheel size, battery split, tube count, the fact that the seat is structural — falls out of that one bag.</p>
+  <div class="grid g3">
+    <div class="stat"><span class="v"><span data-v="bag_dims"></span></span><span class="l">mm duffel = <span data-v="bag_in"></span> linear in (limit 62)</span></div>
+    <div class="stat flag"><span class="v"><span data-v="mass_total"></span><small>kg</small></span><span class="l">of <span data-v="mass_limit"></span> kg budget — margin <span data-v="mass_margin"></span></span></div>
+    <div class="stat"><span class="v"><span data-v="vmax"></span><small>km/h</small></span><span class="l">firmware cap — BRC is a 5 mph city<sup><a href="#sources">5</a></sup></span></div>
+  </div>
+  <div class="grid g2" style="margin-top:18px">
+    <div class="card"><h3>Legal shape: a mobility device</h3>
+      <p>Seated electric scooters and golf carts are disallowed personal transport in Black Rock City.<sup><a href="#sources">3</a></sup> A four-wheeled seated electric vehicle is permitted only as an <b>Accessibility Vehicle</b> — an electric wheelchair or 3–4-wheel mobility scooter for a rider with a documented need.<sup><a href="#sources">4</a></sup> On Ocean Beach the ADA "other power-driven mobility device" route is the only one.<sup><a href="#sources">7</a></sup></p>
+      <p>So the Sprawler is designed, limited and documented as a powered mobility device (ISO 7176 / EN 12184 reference tests<sup><a href="#sources">6</a></sup>): 8 km/h cap, firmware turn-rate limiter, lights, and a rating record a rider can hand to an inspector.</p></div>
+    <div class="card"><h3>Two surfaces, one vehicle</h3>
+      <p>Hard playa needs almost nothing (rolling resistance ≈ 0.02). Dry loose Ocean Beach sand needs ten times the drawbar and real flotation. The 16 × 3.0 tire lands at ~40 kPa ground pressure at the default class — excellent on playa, workable on dry sand at crawl speed — and only fits the bag section <em>deflated</em>. A 20 × 4.0 "PS-Sand" variant trades the one-bag pack for beach flotation.</p></div>
+  </div>
+</div></section>
+
+<section id="system"><div class="wrap">
+  <div class="kicker">§02 · what it is</div>
+  <h2>A camp chair with a network.</h2>
+  <p class="lead">From the sketch: one box — battery, motor, gearbox, brake, electronics — "4× redundant"; a chair frame like an REI camp chair with rods that stick into pockets on a canvas seat; two foot or hand controls; a signal bus; and a graph of nodes <code>W W W W · B · C C · I 1…n · L 1…n</code>.</p>
+  <div class="grid g2">
+    <div class="card"><h3>Nodes</h3>
+      <table><tr><th>Node</th><th>Count</th><th>What it does</th></tr>
+      <tr><td><b>W</b> wheel module</td><td class="n">4</td><td>16 × 3.0 tubeless on a mini geared hub motor; 7s1p pack (<span data-v="wh"></span> Wh); FOC controller; Ethernet node; printed carrier with a T-rail dock. <b>The wheel module is the battery.</b></td></tr>
+      <tr><td><b>C</b> control module</td><td class="n">2</td><td>Left and right "tread" inputs. Lever, pedal, joystick half, sip-puff — all publish the same normalised command. A rider missing a left leg and a right arm uses a left lever and a right pedal.</td></tr>
+      <tr><td><b>B</b> bus node</td><td class="n">1</td><td>Unmanaged Ethernet switch + supervisor + power distribution + charge input + e-stop. If it dies, everything stops: that is the safe state.</td></tr>
+      <tr><td><b>I</b> / <b>L</b></td><td class="n">n</td><td>Inputs (horn, app) and loads (lights, sound) on the same two connectors as everything else.</td></tr></table></div>
+    <div class="card"><h3>Three interfaces, frozen</h3>
+      <p><b>Dock</b> — fore/aft-symmetric T-rail + one drop pin; plus <b>DATA</b> (M12 D-coded, 100BASE-TX) and <b>POWER/ID</b> (M12 A-coded, SELV bus + a resistor that tells the node which dock it is in). Traction current never crosses a dock.</p>
+      <p><b>PS-Bus</b> — UDP multicast JSON, no broker, no master. <code>ctrl/tread/left</code> at 50 Hz is both the command and the heartbeat; a wheel stops <span data-v="timeout"></span> ms after the last valid one.</p>
+      <p><b>Seat pockets</b> — four Ø32 mm cups over domed pegs on the frame tips. The seat is the only part never swapped, the most decorated, and — because its side straps close the truss — a rated structural member.</p>
+      <p class="small">Skid steer: left command drives both left wheels, right drives both right. No steering mechanism is what makes the four modules identical. <a href="https://github.com/outrightmental/PlayaSprawler/blob/main/docs/02-architecture.md">docs/02</a></p></div>
+  </div>
+  <div class="grid g2" style="margin-top:18px">
+    <div class="card"><h3>Generated geometry — side</h3><img src="assets/view_side.png" alt="CadQuery side view" style="width:100%;height:auto"></div>
+    <div class="card"><h3>Generated geometry — front</h3><img src="assets/view_front.png" alt="CadQuery front view" style="width:100%;height:auto"></div>
+  </div>
+  <p class="small">Every joiner is grown by <code>cad/ps_cad.py</code> from the node directions in <code>analysis/ps_params.py</code>: one socket boss per tube, one anchor rod per cord, a T-slot shoe on each dock, a domed peg on each seat tip. STEP and STL exports are in the repo.</p>
+</div></section>
+<section id="evidence"><div class="wrap">
+  <div class="kicker">§03 · evidence — every number below is computed by <code>analysis/run_all.py</code></div>
+  <h2>The frame is a truss, and the seat is part of it.</h2>
+  <p class="lead">A 3D pin-jointed, tension-only truss solver runs four load cases for each rating class: static, 2.5 g vertical (bump/drop), 1.0 g + 0.6 g lateral skid, and a 0.5 W backrest lean. The camp-chair backrest is a mechanism until the seat's side straps and the crossed backstays are counted — so they are, and they are rated.</p>
+  <div class="hideoverflow"><table id="frame-table"></table></div>
+  <div class="grid g3" style="margin-top:18px">
+    <div class="card"><h3>Stability</h3><p id="stab-text"></p></div>
+    <div class="card"><h3>Turn-rate limiter</h3><p>Firmware rule <code>|ω|·|v| ≤ <span data-v="alat"></span> g</code> with <code>ω = (v<sub>R</sub> − v<sub>L</sub>)/track</code>. The wheels enforce it because skid steer allows yaw the geometry cannot survive.</p><table id="turn-table"></table></div>
+    <div class="card"><h3>Axle, single-sided</h3><p id="axle-text"></p></div>
+  </div>
+  <h3>Range and drawbar by surface (default class, 8 km/h)</h3>
+  <div class="card"><div class="bars" id="range-bars"></div><p class="small" style="margin-top:10px">Usable energy <span data-v="e_usable"></span> Wh over four packs. Rolling-resistance coefficients are assumptions (hard playa 0.02, soft/dusty 0.06, wet sand 0.05, dry loose sand 0.20) until the dyno test corrects them. Dry loose sand at 10 % grade exceeds rated torque: the firmware derates speed there.</p></div>
+</div></section>
+
+<section id="rating"><div class="wrap">
+  <div class="kicker">§04 · the safety code in the DNA</div>
+  <h2>Every part carries a class. The vehicle is the weakest one.</h2>
+  <p class="lead">Classes are payload masses: <b>PS-100</b>, <b>PS-125</b>, <b>PS-150</b> kg (rider + gear). A part is rated by analysis with stated knock-downs and safety factors, then <em>proof-loaded to 1.5 × static before it is marked</em>. Firmware repeats the check: every node's hello carries its rating, and the vehicle drops to crawl if any live part is below the rider's class.</p>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Rating calculator</h3>
+      <div class="ctl">
+        <label class="slider">rider class <select id="rc"><option>PS-100</option><option selected>PS-125</option><option>PS-150</option></select></label>
+        <label class="slider">swap one wheel module for a <select id="swap"><option value="">— none —</option><option>PS-100</option><option>PS-125</option><option>PS-150</option></select></label>
+      </div>
+      <div id="rating-out"></div>
+    </div>
+    <div class="card"><h3>Allowables and factors</h3>
+      <table><tr><th>Material</th><th>Basis</th><th class="n">Knock-down</th><th class="n">SF</th></tr>
+      <tr><td>CF tube 25 × 22</td><td>450 MPa ult., Euler with E = 80 GPa</td><td class="n">—</td><td class="n">2.0</td></tr>
+      <tr><td>Dyneema SK78 5 mm</td><td>MBL 18 kN</td><td class="n">0.5 (knots)</td><td class="n">3.0</td></tr>
+      <tr><td>Seat edge + webbing</td><td>6 kN pull test</td><td class="n">—</td><td class="n">3.0</td></tr>
+      <tr><td>Printed joiner (CF nylon/PET)</td><td>80 MPa datasheet</td><td class="n">0.5</td><td class="n">1.5</td></tr>
+      <tr><td>Hub-motor axle</td><td>785 MPa yield <i>assumed</i></td><td class="n">verify</td><td class="n">1.5</td></tr></table>
+      <p class="small">Label on every load-path part: <code>PS-125 · JOINER-HUB-L · batch · maker · proof date</code> as a QR code. <a href="https://github.com/outrightmental/PlayaSprawler/blob/main/docs/03-rating-code.md">docs/03</a></p></div>
+  </div>
+</div></section>
+
+<section id="modules"><div class="wrap">
+  <div class="kicker">§05 · modules</div>
+  <h2>Five things, each with one interface.</h2>
+  <div class="grid g2">
+    <div class="card"><h3>W — wheel module <span class="tag">interface v1</span></h3>
+      <img src="assets/view_wheel_module.png" alt="Wheel module: tire, hub motor and the inboard carrier brick with its T-rail" style="width:100%;max-width:360px;height:auto;float:right;margin:0 0 8px 12px">
+      <p><span data-v="tire"></span>, Ø<span data-v="wheel_od"></span> mm inflated / <span data-v="wheel_od_deflated"></span> packed, <span data-v="module_width"></span> mm wide, target <span data-v="module_mass"></span> kg.</p>
+      <div id="module-breakdown" class="bars"></div>
+      <p class="small">Mini geared hub motor 250 / 500 W, 20 / 35 N·m, no-clutch variant for regen and hill-hold. Printed carrier with aluminium torque plates; single-sided axle clamp (see caveat 2). <a href="https://github.com/outrightmental/PlayaSprawler/blob/main/docs/04-spec-wheel-module.md">docs/04</a></p></div>
+    <div class="card"><h3>C — control module <span class="tag">interface v1</span></h3>
+      <p>One 25 mm rail clamp, the same two M12 connectors, one message: <code>ctrl/tread/&lt;side&gt; {v: −1…1, seq}</code> at 50 Hz. Return-to-centre, ≥ 5 % dead-band. The dock says CL or CR; the input form is the rider's business.</p>
+      <table><tr><th>Form</th><th>For</th></tr><tr><td>hand lever</td><td>most riders</td></tr><tr><td>foot rocker pedal</td><td>riders without the use of one hand</td></tr><tr><td>joystick half-axis ×2</td><td>one-handed riders</td></tr><tr><td>sip-puff / switch pairs</td><td>as needed</td></tr></table>
+      <p class="small"><a href="https://github.com/outrightmental/PlayaSprawler/blob/main/docs/05-spec-control-module.md">docs/05</a></p></div>
+    <div class="card"><h3>B — bus node and PS-Bus <span class="tag">v1</span></h3>
+      <p>100BASE-TX on M12 D-coded through an 8-port unmanaged switch; separate M12 A-coded power/ID bus at pack voltage with 5 A eFuses per port. UDP multicast <code>239.77.83.1:7783</code>, JSON, no broker.</p>
+      <table><tr><th>Topic</th><th>Rate</th></tr><tr><td><code>ctrl/tread/left|right</code></td><td>50 Hz</td></tr><tr><td><code>wheel/&lt;pos&gt;/status</code></td><td>10 Hz</td></tr><tr><td><code>node/&lt;serial&gt;/hello</code> (rating)</td><td>1 Hz</td></tr><tr><td><code>veh/mode</code> · <code>veh/estop</code></td><td>10 Hz</td></tr></table>
+      <p class="small">Rules: heartbeat by stream (200 ms), presence by status (250 ms), one node per dock, rating = min. "Do better than Ethernet" is reserved: 10BASE-T1S single-pair for v2. <a href="https://github.com/outrightmental/PlayaSprawler/blob/main/docs/06-spec-bus-node-and-network.md">docs/06</a></p></div>
+    <div class="card"><h3>Frame and seat</h3>
+      <p><span data-v="tube"></span> for every member: 3 rails, 4 legs, 2 poles, 2 posts — 0.74 kg of tube. <span data-v="cord"></span> for the side, rear, X-brace, forestay, aftstay and crossed backstay cords. Printed joiners at ten nodes.</p>
+      <p>The seat: two layers of 1000D with 25 mm webbing side straps sewn full length, four corner cups. Decorate the face freely; never cut the straps or pockets. Flat pattern in <code>seat/</code>. <a href="https://github.com/outrightmental/PlayaSprawler/blob/main/docs/08-spec-seat.md">docs/08</a></p>
+      <img src="assets/view_top.png" alt="Plan view" style="width:100%;height:auto"></div>
+  </div>
+</div></section>
+
+<section id="sim"><div class="wrap">
+  <div class="kicker">§06 · simulator — a port of <code>firmware/sim/psbus_sim.py</code>, same rules, same timings</div>
+  <h2>Pull a wheel. Plug in the wrong one. Cut a cable.</h2>
+  <p class="lead">Drive with the two treads, then break things. The supervisor only ever publishes a mode; every wheel decides for itself, from the messages it can see, whether it is allowed to move.</p>
+  <div class="sim">
+    <div>
+      <div class="ctl">
+        <label class="slider">left tread <input type="range" id="tl" min="-100" max="100" value="0"><span id="tlv">0.00</span></label>
+        <label class="slider">right tread <input type="range" id="tr" min="-100" max="100" value="0"><span id="trv">0.00</span></label>
+      </div>
+      <div class="ctl">
+        <button class="btn flag" id="b-pull">pull wheel RR</button>
+        <button class="btn" id="b-ins100">insert spare rated PS-100</button>
+        <button class="btn" id="b-ins125">insert spare rated PS-125</button>
+        <button class="btn alt" id="b-cut">unplug left control</button>
+        <button class="btn alt" id="b-plug">re-plug left control</button>
+        <button class="btn alt" id="b-estop">e-stop</button>
+      </div>
+      <div class="wheels" id="sim-wheels"></div>
+      <p class="small" style="margin-top:10px">mode <span id="sim-mode" class="tag ok">run</span> · vehicle rating <span id="sim-rating" class="tag">PS-125</span> · rider class <span class="tag">PS-125</span> · left control <span id="sim-cl" class="tag ok">CL lever</span> · right control <span class="tag ok">CR pedal</span></p>
+    </div>
+    <div class="log" id="sim-log"></div>
+  </div>
+</div></section>
+
+<section id="pack"><div class="wrap">
+  <div class="kicker">§07 · packing — the binding constraint, honestly</div>
+  <h2><span data-v="mass_total"></span> kg of <span data-v="mass_limit"></span>. The margin is <span data-v="mass_margin_kg"></span> kg.</h2>
+  <p class="lead">Four modules stack axially (4 × <span data-v="module_width"></span> = <span data-v="stack"></span> mm of the 640 mm bag); tires must be deflated to fit the 430 mm section; tubes shock-cord into segments ≤ <span data-v="longest"></span> mm; cords, seat, controls and bus node fill the ~32 L of corner voids. The mass margin is 0.8 %: a target, not a measurement.</p>
+  <div class="grid g2">
+    <div class="card"><h3>Mass budget vs 50 lb</h3><div class="bars" id="mass-bars"></div></div>
+    <div class="card"><h3>If the scale disagrees</h3>
+      <ol style="padding-left:20px;margin:6px 0"><li>Weigh every prototype part — the budget is derived from vendor masses.</li><li>PS-Lite wheels (16 × 2.4) recover ~0.8 kg.</li><li>Two-bag pack: the ticket allows two items. Modules in one, everything else in the other. PS-Sand (20 × 4.0) needs this anyway.</li><li>Bus node and controls ride in the 9 × 10 × 17 in carry-on.</li></ol>
+      <table id="seg-table" style="margin-top:12px"></table></div>
+  </div>
+</div></section>
+
+<section id="fleet"><div class="wrap">
+  <div class="kicker">§08 · fleet operations — the reason for all the sameness</div>
+  <h2>A camp keeps a rack of modules, not a row of vehicles.</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Charging rack = docks</h3><p>Same rail, same two connectors, bus-bar behind. Any module docks to charge at ≤ 3 A; 32 modules overnight ≈ 2.7 kWh. Slots publish SoC on the camp LAN.</p></div>
+    <div class="card"><h3>Swap in under a minute</h3><p>Stop → pull the pin → slide the module off the rail → slide the spare on → pin clicks → the node reads the dock and hellos with its rating → run, or crawl if the rating is low. Logged automatically.</p></div>
+    <div class="card"><h3>Sign-out by class</h3><p>Rider mass + gear → class. The steward assigns a vehicle rated at or above it and sets the rider class on the B node, which enforces it for the day. QR labels + hello logs answer "what was on that vehicle" in one query.</p></div>
+  </div>
+  <p class="small">Lifecycle: new → proof-tested → in service → flagged → inspected → in service | retired. A flagged module never returns without an inspection entry. <a href="https://github.com/outrightmental/PlayaSprawler/blob/main/docs/11-fleet-operations.md">docs/11</a></p>
+</div></section>
+
+<section id="rollout"><div class="wrap">
+  <div class="kicker">§09 · staged rollout with go/no-go gates</div>
+  <h2>Nothing rides until its stage passes.</h2>
+  <div class="stages">
+    <div class="stage"><div class="n">0</div><div><b>One wheel module on a test rig.</b> Motor, pack, node, carrier. Dyno for efficiency and torque; axle steel verified; T-2/T-3 socket and latch pull-outs.<div class="gate">GATE: drive efficiency ≥ 0.70 · latch holds 1.5 × LC2 · axle grade documented or double-sided clamp adopted</div></div></div>
+    <div class="stage"><div class="n">1</div><div><b>Frame kit + seat, static.</b> Print the ten joiners, cut tubes, sew one seat. T-1 bend, T-4 cord/edge, T-5 proof at PS-125.<div class="gate">GATE: measured deflection within 10 % of prediction · no permanent set · proof passed on every joiner</div></div></div>
+    <div class="stage"><div class="n">2</div><div><b>Rolling prototype on hard ground.</b> Four modules, two controls, B node. T-9 comms fail-safe, T-10 hot-swap timing, T-8 brake, T-14 tilt table.<div class="gate">GATE: every cable-pull stops the side ≤ 0.5 s · swap ≤ 60 s · crawl on a low-rated part · lift-off ≥ 24°</div></div></div>
+    <div class="stage"><div class="n">3</div><div><b>Pack test and bus rehearsal.</b> T-11 pack/unpack ×3, checked scale, tubeless reseat with a mini pump.<div class="gate">GATE: ≤ 50 lb on the scale · ≤ 15 min each way · tires reseat</div></div></div>
+    <div class="stage"><div class="n">4</div><div><b>Surface trials.</b> Ocean Beach (as an OPDMD, with permission checked) and playa-equivalent: range loop, T-12 dust, T-13 thermal.<div class="gate">GATE: hard-ground range ≥ 15 km · no ingress · motor &lt; 95 °C on the grade loop</div></div></div>
+    <div class="stage"><div class="n">5</div><div><b>Fleet of four with a rack.</b> Sign-out by class, swap drills, logs, incident review. Then publish v1.0 of the interfaces.<div class="gate">GATE: 30 fleet-days without a rating bypass or an unlogged swap</div></div></div>
+  </div>
+</div></section>
+
+<section id="caveats"><div class="wrap">
+  <div class="kicker">§10 · caveats — read before building</div>
+  <h2>What is idealised, unverified, or marginal.</h2>
+  <div class="grid g2">
+    <div class="card"><ol style="padding-left:20px;margin:0">
+      <li><b>The 50 lb margin is 0.19 kg.</b> Expect PS-Lite wheels or the two-bag pack on the first prototypes.</li>
+      <li><b>Axle steel is assumed</b> (785 MPa). SF 2.1 at PS-125 depends on it; otherwise the carrier must support the axle on both sides.</li>
+      <li><b>The truss is idealised</b>: pin joints, tension-only cords, seat as five straight members, no joint compliance. Deflections are lower bounds.</li>
+      <li><b>Printed allowables</b> are a 0.5 guess on datasheet values until T-2/T-5 data exist for the chosen filament and printer.</li>
+      <li><b>Range</b> assumes 0.70 drive efficiency and textbook rolling-resistance coefficients. Dry-sand range (2.5 km) is a warning.</li></ol></div>
+    <div class="card"><ol start="6" style="padding-left:20px;margin:0">
+      <li><b>Deflated-tire packing</b> is the only way the 16 × 3.0 fits. Tubeless reseating on the playa must be proven.</li>
+      <li><b>Regulatory</b>: BRC only as an Accessibility Vehicle for a rider with a documented need; Ocean Beach only as an OPDMD. Nothing here is a permit.</li>
+      <li><b>Hot-swap while rolling</b> is a demonstrated protocol behaviour, not a procedure. Stop first.</li>
+      <li><b>Vendor variance</b> in hub-motor axles, wire exits and gear ratios — the carrier is parametric for that reason.</li>
+      <li><b>No prototype exists.</b> Everything here is analysis, CAD and simulation. Stage 0 is a single module on a rig.</li></ol></div>
+  </div>
+</div></section>
+
+<section id="sources"><div class="wrap">
+  <div class="kicker">sources — verified 2026-09-08</div>
+  <ol class="src">
+    <li>Burner Express Bus — luggage limits (62 linear inches, 50 lb per item; two items + carry-on): <a href="https://help.burningman.org/hc/en-us/articles/360024792811-BXBus-Is-there-a-limit-on-the-amount-of-gear-I-can-bring">help.burningman.org</a></li>
+    <li>Burner Express Bus information and terms: <a href="https://burnerexpress.burningman.org/burner-express-bus-information/">burnerexpress.burningman.org</a></li>
+    <li>Burning Man Journal, July 2026 — disallowed scooters and e-motorcycles in BRC: <a href="https://journal.burningman.org/2026/07/black-rock-city/survive-and-thrive/disallowed-vehicles-in-brc-2026/">journal.burningman.org</a></li>
+    <li>Accessibility Vehicles in Black Rock City: <a href="https://burningman.org/black-rock-city/bring-your-mutant-vehicle/accessibility-vehicles/">burningman.org</a> · <a href="https://help.burningman.org/hc/en-us/articles/360024793811-What-is-an-Accessibility-Vehicle">help.burningman.org</a></li>
+    <li>Survival Guide — getting around BRC, mutant vehicles and the DMV: <a href="https://survival.burningman.org/getting-around-brc/mutant-vehicles-the-dmv/">survival.burningman.org</a></li>
+    <li>ISO 7176 (wheelchairs) and EN 12184 (electrically powered wheelchairs and scooters) — referenced test families.</li>
+    <li>ADA — other power-driven mobility devices, 28 CFR 35.137 / 36.311; GGNRA policy to be checked at time of use.</li>
+    <li>BoardingFlow, the structural template for this project: <a href="https://boardingflow.outright.io/">boardingflow.outright.io</a></li>
+    <li>Rolling resistance and tire flotation rules of thumb: standard vehicle-dynamics references (Wong, <i>Theory of Ground Vehicles</i>) — treated as assumptions.</li>
+    <li>Dyneema SK78 5 mm single-braid MBL ≈ 18 kN — manufacturer datasheets; knot knock-down 0.5 per rigging practice.</li>
+  </ol>
+</div></section>
+
+<footer><div class="wrap">Playa Sprawler · an Outright Mental project · hardware CERN-OHL-S-2.0, software Apache-2.0, docs CC-BY-SA-4.0 · <a href="https://github.com/outrightmental/PlayaSprawler">source, analysis, CAD and simulator on GitHub</a> · built <span id="built"></span> from <code>analysis/results/results.json</code>.</div></footer>
+
+<script>
+const PS = /*__PS_DATA__*/null;
+/*__SCRIPT__*/
+</script>
+</body>
+</html>

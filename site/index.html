@@ -1,0 +1,544 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Playa Sprawler — open-source personal mobility for the playa and the beach</title>
+<meta name="description" content="An open-source, one-bag, four-identical-wheel-module mobility vehicle for Black Rock City and Ocean Beach, with a rating code built into every part. Analysis, CAD, protocol and fleet method.">
+<meta property="og:title" content="Playa Sprawler">
+<meta property="og:description" content="Open-source personal mobility optimized for accessibility and maintainability.">
+<meta property="og:url" content="https://playasprawler.outright.io/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;700;900&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --paper:#f7f6f2; --paper-2:#eeece5; --ink:#15171c; --ink-2:#4a4e58; --ink-3:#8a8f9a; --line:#d9d6cc;
+  --flag:#f0561b; --flag-ink:#b93d0e; --data:#1f5fa8; --data-2:#dbe7f7; --ok:#1d8a4a; --warn:#b98400;
+  --mono:"JetBrains Mono",ui-monospace,SFMono-Regular,Menlo,monospace; --sans:"Archivo","Helvetica Neue",Arial,sans-serif;
+  --max:1120px; --gutter:clamp(16px,4vw,40px);
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);font-size:17px;line-height:1.55;-webkit-font-smoothing:antialiased;
+  background-image:radial-gradient(var(--line) .8px,transparent .8px);background-size:22px 22px}
+a{color:var(--data);text-decoration:none;border-bottom:1px solid transparent}a:hover{border-bottom-color:currentColor}
+h1,h2,h3{font-weight:900;letter-spacing:-.02em;line-height:1.05;margin:0}
+h2{font-size:clamp(28px,4vw,44px)}h3{font-size:20px;font-weight:700;letter-spacing:-.01em;margin:26px 0 8px}
+p{margin:.6em 0;max-width:68ch}
+code,.mono{font-family:var(--mono);font-size:.86em}
+.wrap{max-width:var(--max);margin:0 auto;padding:0 var(--gutter)}
+/* top bar */
+.bar{position:sticky;top:0;z-index:20;background:rgba(247,246,242,.92);backdrop-filter:blur(8px);border-bottom:1px solid var(--line)}
+.bar .wrap{display:flex;align-items:center;gap:20px;height:52px}
+.brand{font-weight:900;letter-spacing:-.02em;font-size:18px;color:var(--ink);white-space:nowrap}
+.brand b{color:var(--flag)}
+.nav{display:flex;gap:2px;overflow-x:auto;scrollbar-width:none;margin-left:auto}
+.nav a{font-family:var(--mono);font-size:12px;color:var(--ink-2);padding:6px 9px;border-radius:4px;white-space:nowrap;border:0}
+.nav a:hover{background:var(--paper-2);color:var(--ink)}
+/* sections */
+section{padding:72px 0 40px;border-top:1px solid var(--line)}
+.kicker{font-family:var(--mono);font-size:12px;color:var(--flag-ink);letter-spacing:.04em;margin-bottom:12px}
+.kicker::before{content:"";display:inline-block;width:22px;height:2px;background:var(--flag);vertical-align:middle;margin-right:10px}
+.lead{font-size:clamp(19px,2.2vw,23px);line-height:1.4;max-width:60ch;color:var(--ink);margin:18px 0}
+.grid{display:grid;gap:18px}.g2{grid-template-columns:repeat(auto-fit,minmax(300px,1fr))}.g3{grid-template-columns:repeat(auto-fit,minmax(240px,1fr))}
+.card{background:#fff;border:1px solid var(--line);border-radius:8px;padding:18px 20px}
+.card h3{margin-top:0}
+.stat{display:flex;flex-direction:column;gap:2px;padding:14px 16px;background:#fff;border:1px solid var(--line);border-radius:8px}
+.stat .v{font-size:32px;font-weight:900;letter-spacing:-.03em;line-height:1}.stat .v small{font-size:15px;font-weight:500;color:var(--ink-2);margin-left:4px}
+.stat .l{font-family:var(--mono);font-size:12px;color:var(--ink-2)}
+.stat.flag .v{color:var(--flag)}
+table{border-collapse:collapse;width:100%;font-size:14.5px;background:#fff;border:1px solid var(--line);border-radius:8px;overflow:hidden}
+th,td{padding:8px 10px;text-align:left;border-bottom:1px solid var(--line);vertical-align:top}th{font-family:var(--mono);font-size:12px;color:var(--ink-2);font-weight:500;background:var(--paper-2)}
+tr:last-child td{border-bottom:0}td.n,th.n{text-align:right;font-family:var(--mono);font-size:13.5px}
+.pass{color:var(--ok);font-weight:700}.fail{color:var(--flag-ink);font-weight:700}.warn{color:var(--warn);font-weight:700}
+.tag{display:inline-block;font-family:var(--mono);font-size:11.5px;padding:2px 7px;border-radius:3px;background:var(--data-2);color:var(--data)}
+.tag.flag{background:#fde3d8;color:var(--flag-ink)}.tag.ok{background:#dcf2e4;color:var(--ok)}
+.btn{font:600 13px var(--mono);background:var(--ink);color:#fff;border:0;border-radius:5px;padding:9px 13px;cursor:pointer}
+.btn.alt{background:#fff;color:var(--ink);border:1px solid var(--ink)}.btn.flag{background:var(--flag)}
+.btn:disabled{opacity:.4;cursor:default}
+select,input[type=range]{font:14px var(--mono)}
+.note{font-size:14px;color:var(--ink-2)}
+.small{font-size:13.5px;color:var(--ink-2)}
+ol.src{font-size:14px;padding-left:22px}ol.src li{margin:6px 0;word-break:break-word}
+sup a{font-family:var(--mono);font-size:11px;color:var(--flag-ink);border:0}
+/* hero */
+.hero{padding:56px 0 30px;border-top:0}
+.hero h1{font-size:clamp(38px,5.4vw,66px);max-width:12ch}
+.hero h1 span{color:var(--flag)}
+.hero-grid{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+@media(max-width:860px){.hero-grid{grid-template-columns:1fr}}
+.demo{background:#fff;border:1px solid var(--line);border-radius:10px;padding:12px;position:relative}
+.demo svg{width:100%;height:auto;display:block}
+.ticker{font-family:var(--mono);font-size:11.5px;color:var(--ink-2);height:76px;overflow:hidden;border-top:1px solid var(--line);margin-top:8px;padding-top:6px;line-height:1.55}
+.ticker div{white-space:nowrap}
+.ticker b{color:var(--data);font-weight:600}.ticker i{color:var(--flag-ink);font-style:normal}
+.modebadge{position:absolute;top:16px;left:16px;font:700 12px var(--mono);padding:4px 9px;border-radius:4px;background:var(--ok);color:#fff;letter-spacing:.06em}
+.modebadge.stop{background:var(--flag)}.modebadge.crawl{background:var(--warn)}
+.tube{stroke:var(--ink);stroke-width:5;stroke-linecap:round}.cord{stroke:var(--data);stroke-width:1.4;stroke-dasharray:4 3}
+.fab{fill:none;stroke:var(--flag);stroke-width:3;stroke-linecap:round}
+.joint{fill:#fff;stroke:var(--ink);stroke-width:2}
+.tire{fill:#fff;stroke:var(--ink);stroke-width:4}.rim{fill:none;stroke:var(--ink-3);stroke-width:2}.brick{fill:var(--paper-2);stroke:var(--ink);stroke-width:1.5}
+.swap-out{animation:swapout 9s infinite}.swap-in{animation:swapin 9s infinite}
+@keyframes swapout{0%,38%{transform:translate(0,0);opacity:1}50%{transform:translate(-140px,30px);opacity:0}100%{transform:translate(-140px,30px);opacity:0}}
+@keyframes swapin{0%,52%{transform:translate(-140px,30px);opacity:0}64%,100%{transform:translate(0,0);opacity:1}}
+/* bus sim */
+.sim{display:grid;grid-template-columns:1.1fr .9fr;gap:20px}@media(max-width:860px){.sim{grid-template-columns:1fr}}
+.wheels{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.wheel{border:1px solid var(--line);border-radius:8px;padding:10px 12px;background:#fff;font-family:var(--mono);font-size:12px}
+.wheel .pos{font-weight:700;font-size:14px}.wheel .bar{height:10px;background:var(--paper-2);border-radius:5px;margin:8px 0;overflow:hidden}
+.wheel .bar i{display:block;height:100%;background:var(--data);width:0;transition:width .12s linear}
+.wheel.gone{opacity:.35;border-style:dashed}
+.log{font-family:var(--mono);font-size:12px;background:#15171c;color:#d8dbe2;border-radius:8px;padding:12px;height:280px;overflow:auto;line-height:1.5}
+.log .t{color:#8a8f9a}.log .e{color:#ffb38a}.log .m{color:#8fd3ff}
+.ctl{display:flex;flex-wrap:wrap;gap:8px;margin:10px 0}
+.slider{display:flex;align-items:center;gap:10px;font-family:var(--mono);font-size:12px}
+/* bars */
+.bars{display:grid;gap:6px;font-family:var(--mono);font-size:12.5px}
+.bars .row{display:grid;grid-template-columns:200px 1fr 70px;gap:10px;align-items:center}
+.bars .b{height:14px;background:var(--paper-2);border-radius:3px;overflow:hidden;position:relative}
+.bars .b i{position:absolute;left:0;top:0;bottom:0;background:var(--data);border-radius:3px}
+.bars .b i.flag{background:var(--flag)}
+@media(max-width:600px){.bars .row{grid-template-columns:120px 1fr 60px}}
+/* rollout */
+.stages{display:grid;gap:12px}
+.stage{display:grid;grid-template-columns:70px 1fr;gap:14px;background:#fff;border:1px solid var(--line);border-radius:8px;padding:14px 16px}
+.stage .n{font:900 26px var(--sans);color:var(--flag);letter-spacing:-.03em}
+.stage .gate{font-family:var(--mono);font-size:12.5px;color:var(--ink-2);margin-top:6px}
+footer{padding:40px 0 60px;font-size:13.5px;color:var(--ink-2)}
+.hideoverflow{overflow-x:auto}
+</style>
+</head>
+<body>
+<div class="bar"><div class="wrap">
+  <a class="brand" href="#top">Playa <b>Sprawler</b></a>
+  <nav class="nav">
+    <a href="#constraint">01 Constraint</a><a href="#system">02 System</a><a href="#evidence">03 Evidence</a><a href="#rating">04 Rating code</a>
+    <a href="#modules">05 Modules</a><a href="#sim">06 Simulator</a><a href="#pack">07 Packing</a><a href="#fleet">08 Fleet</a><a href="#rollout">09 Rollout</a><a href="#caveats">10 Caveats</a><a href="#sources">Sources</a>
+  </nav>
+</div></div>
+
+<section class="hero" id="top"><div class="wrap">
+  <div class="hero-grid">
+    <div>
+      <div class="kicker">open-source personal mobility · v<span data-v="version"></span> · analysis, CAD, protocol, fleet method</div>
+      <h1>Four wheels. One bag. <span>Any</span> of them, anywhere.</h1>
+      <p class="lead">A camp chair on four identical, hot-swappable, self-powered wheel modules — packed into one piece of Burner Express luggage, rated to the rider's mass down to every tube, joint and cord, and repaired by a community fleet in under a minute.</p>
+      <div class="grid g3" style="margin-top:22px">
+        <div class="stat flag"><span class="v" data-v="bag_lb"></span><span class="l">lb — the whole vehicle, in one bag</span></div>
+        <div class="stat"><span class="v">4<small>× W</small></span><span class="l">identical wheel modules, any dock</span></div>
+        <div class="stat"><span class="v" data-v="timeout"></span><span class="l">ms to a stop when a signal dies</span></div>
+      </div>
+      <p class="small" style="margin-top:16px">Sources: <a href="https://github.com/outrightmental/PlayaSprawler">github.com/outrightmental/PlayaSprawler</a> · CERN-OHL-S / Apache-2.0 / CC-BY-SA · structured after <a href="https://boardingflow.outright.io/">BoardingFlow</a>.</p>
+    </div>
+    <div class="demo" id="hero-demo">
+      <div class="modebadge" id="hero-mode">RUN</div>
+      <svg id="hero-svg" viewBox="0 0 560 360" aria-label="Side view of the vehicle with a rear wheel module being hot-swapped"></svg>
+      <div class="ticker" id="hero-ticker"></div>
+    </div>
+  </div>
+</div></section>
+
+<section id="constraint"><div class="wrap">
+  <div class="kicker">§01 · the constraint that designed the vehicle</div>
+  <h2>It has to ride the bus.</h2>
+  <p class="lead">The Burner Express bus to Black Rock City allows two luggage items per ticket, each at most 62 linear inches and 50 lb.<sup><a href="#sources">1</a></sup> Everything else — wheel size, battery split, tube count, the fact that the seat is structural — falls out of that one bag.</p>
+  <div class="grid g3">
+    <div class="stat"><span class="v"><span data-v="bag_dims"></span></span><span class="l">mm duffel = <span data-v="bag_in"></span> linear in (limit 62)</span></div>
+    <div class="stat flag"><span class="v"><span data-v="mass_total"></span><small>kg</small></span><span class="l">of <span data-v="mass_limit"></span> kg budget — margin <span data-v="mass_margin"></span></span></div>
+    <div class="stat"><span class="v"><span data-v="vmax"></span><small>km/h</small></span><span class="l">firmware cap — BRC is a 5 mph city<sup><a href="#sources">5</a></sup></span></div>
+  </div>
+  <div class="grid g2" style="margin-top:18px">
+    <div class="card"><h3>Legal shape: a mobility device</h3>
+      <p>Seated electric scooters and golf carts are disallowed personal transport in Black Rock City.<sup><a href="#sources">3</a></sup> A four-wheeled seated electric vehicle is permitted only as an <b>Accessibility Vehicle</b> — an electric wheelchair or 3–4-wheel mobility scooter for a rider with a documented need.<sup><a href="#sources">4</a></sup> On Ocean Beach the ADA "other power-driven mobility device" route is the only one.<sup><a href="#sources">7</a></sup></p>
+      <p>So the Sprawler is designed, limited and documented as a powered mobility device (ISO 7176 / EN 12184 reference tests<sup><a href="#sources">6</a></sup>): 8 km/h cap, firmware turn-rate limiter, lights, and a rating record a rider can hand to an inspector.</p></div>
+    <div class="card"><h3>Two surfaces, one vehicle</h3>
+      <p>Hard playa needs almost nothing (rolling resistance ≈ 0.02). Dry loose Ocean Beach sand needs ten times the drawbar and real flotation. The 16 × 3.0 tire lands at ~40 kPa ground pressure at the default class — excellent on playa, workable on dry sand at crawl speed — and only fits the bag section <em>deflated</em>. A 20 × 4.0 "PS-Sand" variant trades the one-bag pack for beach flotation.</p></div>
+  </div>
+</div></section>
+
+<section id="system"><div class="wrap">
+  <div class="kicker">§02 · what it is</div>
+  <h2>A camp chair with a network.</h2>
+  <p class="lead">From the sketch: one box — battery, motor, gearbox, brake, electronics — "4× redundant"; a chair frame like an REI camp chair with rods that stick into pockets on a canvas seat; two foot or hand controls; a signal bus; and a graph of nodes <code>W W W W · B · C C · I 1…n · L 1…n</code>.</p>
+  <div class="grid g2">
+    <div class="card"><h3>Nodes</h3>
+      <table><tr><th>Node</th><th>Count</th><th>What it does</th></tr>
+      <tr><td><b>W</b> wheel module</td><td class="n">4</td><td>16 × 3.0 tubeless on a mini geared hub motor; 7s1p pack (<span data-v="wh"></span> Wh); FOC controller; Ethernet node; printed carrier with a T-rail dock. <b>The wheel module is the battery.</b></td></tr>
+      <tr><td><b>C</b> control module</td><td class="n">2</td><td>Left and right "tread" inputs. Lever, pedal, joystick half, sip-puff — all publish the same normalised command. A rider missing a left leg and a right arm uses a left lever and a right pedal.</td></tr>
+      <tr><td><b>B</b> bus node</td><td class="n">1</td><td>Unmanaged Ethernet switch + supervisor + power distribution + charge input + e-stop. If it dies, everything stops: that is the safe state.</td></tr>
+      <tr><td><b>I</b> / <b>L</b></td><td class="n">n</td><td>Inputs (horn, app) and loads (lights, sound) on the same two connectors as everything else.</td></tr></table></div>
+    <div class="card"><h3>Three interfaces, frozen</h3>
+      <p><b>Dock</b> — fore/aft-symmetric T-rail + one drop pin; plus <b>DATA</b> (M12 D-coded, 100BASE-TX) and <b>POWER/ID</b> (M12 A-coded, SELV bus + a resistor that tells the node which dock it is in). Traction current never crosses a dock.</p>
+      <p><b>PS-Bus</b> — UDP multicast JSON, no broker, no master. <code>ctrl/tread/left</code> at 50 Hz is both the command and the heartbeat; a wheel stops <span data-v="timeout"></span> ms after the last valid one.</p>
+      <p><b>Seat pockets</b> — four Ø32 mm cups over domed pegs on the frame tips. The seat is the only part never swapped, the most decorated, and — because its side straps close the truss — a rated structural member.</p>
+      <p class="small">Skid steer: left command drives both left wheels, right drives both right. No steering mechanism is what makes the four modules identical. <a href="https://github.com/outrightmental/PlayaSprawler/blob/main/docs/02-architecture.md">docs/02</a></p></div>
+  </div>
+  <div class="grid g2" style="margin-top:18px">
+    <div class="card"><h3>Generated geometry — side</h3><img src="assets/view_side.png" alt="CadQuery side view" style="width:100%;height:auto"></div>
+    <div class="card"><h3>Generated geometry — front</h3><img src="assets/view_front.png" alt="CadQuery front view" style="width:100%;height:auto"></div>
+  </div>
+  <p class="small">Every joiner is grown by <code>cad/ps_cad.py</code> from the node directions in <code>analysis/ps_params.py</code>: one socket boss per tube, one anchor rod per cord, a T-slot shoe on each dock, a domed peg on each seat tip. STEP and STL exports are in the repo.</p>
+</div></section>
+<section id="evidence"><div class="wrap">
+  <div class="kicker">§03 · evidence — every number below is computed by <code>analysis/run_all.py</code></div>
+  <h2>The frame is a truss, and the seat is part of it.</h2>
+  <p class="lead">A 3D pin-jointed, tension-only truss solver runs four load cases for each rating class: static, 2.5 g vertical (bump/drop), 1.0 g + 0.6 g lateral skid, and a 0.5 W backrest lean. The camp-chair backrest is a mechanism until the seat's side straps and the crossed backstays are counted — so they are, and they are rated.</p>
+  <div class="hideoverflow"><table id="frame-table"></table></div>
+  <div class="grid g3" style="margin-top:18px">
+    <div class="card"><h3>Stability</h3><p id="stab-text"></p></div>
+    <div class="card"><h3>Turn-rate limiter</h3><p>Firmware rule <code>|ω|·|v| ≤ <span data-v="alat"></span> g</code> with <code>ω = (v<sub>R</sub> − v<sub>L</sub>)/track</code>. The wheels enforce it because skid steer allows yaw the geometry cannot survive.</p><table id="turn-table"></table></div>
+    <div class="card"><h3>Axle, single-sided</h3><p id="axle-text"></p></div>
+  </div>
+  <h3>Range and drawbar by surface (default class, 8 km/h)</h3>
+  <div class="card"><div class="bars" id="range-bars"></div><p class="small" style="margin-top:10px">Usable energy <span data-v="e_usable"></span> Wh over four packs. Rolling-resistance coefficients are assumptions (hard playa 0.02, soft/dusty 0.06, wet sand 0.05, dry loose sand 0.20) until the dyno test corrects them. Dry loose sand at 10 % grade exceeds rated torque: the firmware derates speed there.</p></div>
+</div></section>
+
+<section id="rating"><div class="wrap">
+  <div class="kicker">§04 · the safety code in the DNA</div>
+  <h2>Every part carries a class. The vehicle is the weakest one.</h2>
+  <p class="lead">Classes are payload masses: <b>PS-100</b>, <b>PS-125</b>, <b>PS-150</b> kg (rider + gear). A part is rated by analysis with stated knock-downs and safety factors, then <em>proof-loaded to 1.5 × static before it is marked</em>. Firmware repeats the check: every node's hello carries its rating, and the vehicle drops to crawl if any live part is below the rider's class.</p>
+  <div class="grid g2">
+    <div class="card">
+      <h3>Rating calculator</h3>
+      <div class="ctl">
+        <label class="slider">rider class <select id="rc"><option>PS-100</option><option selected>PS-125</option><option>PS-150</option></select></label>
+        <label class="slider">swap one wheel module for a <select id="swap"><option value="">— none —</option><option>PS-100</option><option>PS-125</option><option>PS-150</option></select></label>
+      </div>
+      <div id="rating-out"></div>
+    </div>
+    <div class="card"><h3>Allowables and factors</h3>
+      <table><tr><th>Material</th><th>Basis</th><th class="n">Knock-down</th><th class="n">SF</th></tr>
+      <tr><td>CF tube 25 × 22</td><td>450 MPa ult., Euler with E = 80 GPa</td><td class="n">—</td><td class="n">2.0</td></tr>
+      <tr><td>Dyneema SK78 5 mm</td><td>MBL 18 kN</td><td class="n">0.5 (knots)</td><td class="n">3.0</td></tr>
+      <tr><td>Seat edge + webbing</td><td>6 kN pull test</td><td class="n">—</td><td class="n">3.0</td></tr>
+      <tr><td>Printed joiner (CF nylon/PET)</td><td>80 MPa datasheet</td><td class="n">0.5</td><td class="n">1.5</td></tr>
+      <tr><td>Hub-motor axle</td><td>785 MPa yield <i>assumed</i></td><td class="n">verify</td><td class="n">1.5</td></tr></table>
+      <p class="small">Label on every load-path part: <code>PS-125 · JOINER-HUB-L · batch · maker · proof date</code> as a QR code. <a href="https://github.com/outrightmental/PlayaSprawler/blob/main/docs/03-rating-code.md">docs/03</a></p></div>
+  </div>
+</div></section>
+
+<section id="modules"><div class="wrap">
+  <div class="kicker">§05 · modules</div>
+  <h2>Five things, each with one interface.</h2>
+  <div class="grid g2">
+    <div class="card"><h3>W — wheel module <span class="tag">interface v1</span></h3>
+      <img src="assets/view_wheel_module.png" alt="Wheel module: tire, hub motor and the inboard carrier brick with its T-rail" style="width:100%;max-width:360px;height:auto;float:right;margin:0 0 8px 12px">
+      <p><span data-v="tire"></span>, Ø<span data-v="wheel_od"></span> mm inflated / <span data-v="wheel_od_deflated"></span> packed, <span data-v="module_width"></span> mm wide, target <span data-v="module_mass"></span> kg.</p>
+      <div id="module-breakdown" class="bars"></div>
+      <p class="small">Mini geared hub motor 250 / 500 W, 20 / 35 N·m, no-clutch variant for regen and hill-hold. Printed carrier with aluminium torque plates; single-sided axle clamp (see caveat 2). <a href="https://github.com/outrightmental/PlayaSprawler/blob/main/docs/04-spec-wheel-module.md">docs/04</a></p></div>
+    <div class="card"><h3>C — control module <span class="tag">interface v1</span></h3>
+      <p>One 25 mm rail clamp, the same two M12 connectors, one message: <code>ctrl/tread/&lt;side&gt; {v: −1…1, seq}</code> at 50 Hz. Return-to-centre, ≥ 5 % dead-band. The dock says CL or CR; the input form is the rider's business.</p>
+      <table><tr><th>Form</th><th>For</th></tr><tr><td>hand lever</td><td>most riders</td></tr><tr><td>foot rocker pedal</td><td>riders without the use of one hand</td></tr><tr><td>joystick half-axis ×2</td><td>one-handed riders</td></tr><tr><td>sip-puff / switch pairs</td><td>as needed</td></tr></table>
+      <p class="small"><a href="https://github.com/outrightmental/PlayaSprawler/blob/main/docs/05-spec-control-module.md">docs/05</a></p></div>
+    <div class="card"><h3>B — bus node and PS-Bus <span class="tag">v1</span></h3>
+      <p>100BASE-TX on M12 D-coded through an 8-port unmanaged switch; separate M12 A-coded power/ID bus at pack voltage with 5 A eFuses per port. UDP multicast <code>239.77.83.1:7783</code>, JSON, no broker.</p>
+      <table><tr><th>Topic</th><th>Rate</th></tr><tr><td><code>ctrl/tread/left|right</code></td><td>50 Hz</td></tr><tr><td><code>wheel/&lt;pos&gt;/status</code></td><td>10 Hz</td></tr><tr><td><code>node/&lt;serial&gt;/hello</code> (rating)</td><td>1 Hz</td></tr><tr><td><code>veh/mode</code> · <code>veh/estop</code></td><td>10 Hz</td></tr></table>
+      <p class="small">Rules: heartbeat by stream (200 ms), presence by status (250 ms), one node per dock, rating = min. "Do better than Ethernet" is reserved: 10BASE-T1S single-pair for v2. <a href="https://github.com/outrightmental/PlayaSprawler/blob/main/docs/06-spec-bus-node-and-network.md">docs/06</a></p></div>
+    <div class="card"><h3>Frame and seat</h3>
+      <p><span data-v="tube"></span> for every member: 3 rails, 4 legs, 2 poles, 2 posts — 0.74 kg of tube. <span data-v="cord"></span> for the side, rear, X-brace, forestay, aftstay and crossed backstay cords. Printed joiners at ten nodes.</p>
+      <p>The seat: two layers of 1000D with 25 mm webbing side straps sewn full length, four corner cups. Decorate the face freely; never cut the straps or pockets. Flat pattern in <code>seat/</code>. <a href="https://github.com/outrightmental/PlayaSprawler/blob/main/docs/08-spec-seat.md">docs/08</a></p>
+      <img src="assets/view_top.png" alt="Plan view" style="width:100%;height:auto"></div>
+  </div>
+</div></section>
+
+<section id="sim"><div class="wrap">
+  <div class="kicker">§06 · simulator — a port of <code>firmware/sim/psbus_sim.py</code>, same rules, same timings</div>
+  <h2>Pull a wheel. Plug in the wrong one. Cut a cable.</h2>
+  <p class="lead">Drive with the two treads, then break things. The supervisor only ever publishes a mode; every wheel decides for itself, from the messages it can see, whether it is allowed to move.</p>
+  <div class="sim">
+    <div>
+      <div class="ctl">
+        <label class="slider">left tread <input type="range" id="tl" min="-100" max="100" value="0"><span id="tlv">0.00</span></label>
+        <label class="slider">right tread <input type="range" id="tr" min="-100" max="100" value="0"><span id="trv">0.00</span></label>
+      </div>
+      <div class="ctl">
+        <button class="btn flag" id="b-pull">pull wheel RR</button>
+        <button class="btn" id="b-ins100">insert spare rated PS-100</button>
+        <button class="btn" id="b-ins125">insert spare rated PS-125</button>
+        <button class="btn alt" id="b-cut">unplug left control</button>
+        <button class="btn alt" id="b-plug">re-plug left control</button>
+        <button class="btn alt" id="b-estop">e-stop</button>
+      </div>
+      <div class="wheels" id="sim-wheels"></div>
+      <p class="small" style="margin-top:10px">mode <span id="sim-mode" class="tag ok">run</span> · vehicle rating <span id="sim-rating" class="tag">PS-125</span> · rider class <span class="tag">PS-125</span> · left control <span id="sim-cl" class="tag ok">CL lever</span> · right control <span class="tag ok">CR pedal</span></p>
+    </div>
+    <div class="log" id="sim-log"></div>
+  </div>
+</div></section>
+
+<section id="pack"><div class="wrap">
+  <div class="kicker">§07 · packing — the binding constraint, honestly</div>
+  <h2><span data-v="mass_total"></span> kg of <span data-v="mass_limit"></span>. The margin is <span data-v="mass_margin_kg"></span> kg.</h2>
+  <p class="lead">Four modules stack axially (4 × <span data-v="module_width"></span> = <span data-v="stack"></span> mm of the 640 mm bag); tires must be deflated to fit the 430 mm section; tubes shock-cord into segments ≤ <span data-v="longest"></span> mm; cords, seat, controls and bus node fill the ~32 L of corner voids. The mass margin is 0.8 %: a target, not a measurement.</p>
+  <div class="grid g2">
+    <div class="card"><h3>Mass budget vs 50 lb</h3><div class="bars" id="mass-bars"></div></div>
+    <div class="card"><h3>If the scale disagrees</h3>
+      <ol style="padding-left:20px;margin:6px 0"><li>Weigh every prototype part — the budget is derived from vendor masses.</li><li>PS-Lite wheels (16 × 2.4) recover ~0.8 kg.</li><li>Two-bag pack: the ticket allows two items. Modules in one, everything else in the other. PS-Sand (20 × 4.0) needs this anyway.</li><li>Bus node and controls ride in the 9 × 10 × 17 in carry-on.</li></ol>
+      <table id="seg-table" style="margin-top:12px"></table></div>
+  </div>
+</div></section>
+
+<section id="fleet"><div class="wrap">
+  <div class="kicker">§08 · fleet operations — the reason for all the sameness</div>
+  <h2>A camp keeps a rack of modules, not a row of vehicles.</h2>
+  <div class="grid g3">
+    <div class="card"><h3>Charging rack = docks</h3><p>Same rail, same two connectors, bus-bar behind. Any module docks to charge at ≤ 3 A; 32 modules overnight ≈ 2.7 kWh. Slots publish SoC on the camp LAN.</p></div>
+    <div class="card"><h3>Swap in under a minute</h3><p>Stop → pull the pin → slide the module off the rail → slide the spare on → pin clicks → the node reads the dock and hellos with its rating → run, or crawl if the rating is low. Logged automatically.</p></div>
+    <div class="card"><h3>Sign-out by class</h3><p>Rider mass + gear → class. The steward assigns a vehicle rated at or above it and sets the rider class on the B node, which enforces it for the day. QR labels + hello logs answer "what was on that vehicle" in one query.</p></div>
+  </div>
+  <p class="small">Lifecycle: new → proof-tested → in service → flagged → inspected → in service | retired. A flagged module never returns without an inspection entry. <a href="https://github.com/outrightmental/PlayaSprawler/blob/main/docs/11-fleet-operations.md">docs/11</a></p>
+</div></section>
+
+<section id="rollout"><div class="wrap">
+  <div class="kicker">§09 · staged rollout with go/no-go gates</div>
+  <h2>Nothing rides until its stage passes.</h2>
+  <div class="stages">
+    <div class="stage"><div class="n">0</div><div><b>One wheel module on a test rig.</b> Motor, pack, node, carrier. Dyno for efficiency and torque; axle steel verified; T-2/T-3 socket and latch pull-outs.<div class="gate">GATE: drive efficiency ≥ 0.70 · latch holds 1.5 × LC2 · axle grade documented or double-sided clamp adopted</div></div></div>
+    <div class="stage"><div class="n">1</div><div><b>Frame kit + seat, static.</b> Print the ten joiners, cut tubes, sew one seat. T-1 bend, T-4 cord/edge, T-5 proof at PS-125.<div class="gate">GATE: measured deflection within 10 % of prediction · no permanent set · proof passed on every joiner</div></div></div>
+    <div class="stage"><div class="n">2</div><div><b>Rolling prototype on hard ground.</b> Four modules, two controls, B node. T-9 comms fail-safe, T-10 hot-swap timing, T-8 brake, T-14 tilt table.<div class="gate">GATE: every cable-pull stops the side ≤ 0.5 s · swap ≤ 60 s · crawl on a low-rated part · lift-off ≥ 24°</div></div></div>
+    <div class="stage"><div class="n">3</div><div><b>Pack test and bus rehearsal.</b> T-11 pack/unpack ×3, checked scale, tubeless reseat with a mini pump.<div class="gate">GATE: ≤ 50 lb on the scale · ≤ 15 min each way · tires reseat</div></div></div>
+    <div class="stage"><div class="n">4</div><div><b>Surface trials.</b> Ocean Beach (as an OPDMD, with permission checked) and playa-equivalent: range loop, T-12 dust, T-13 thermal.<div class="gate">GATE: hard-ground range ≥ 15 km · no ingress · motor &lt; 95 °C on the grade loop</div></div></div>
+    <div class="stage"><div class="n">5</div><div><b>Fleet of four with a rack.</b> Sign-out by class, swap drills, logs, incident review. Then publish v1.0 of the interfaces.<div class="gate">GATE: 30 fleet-days without a rating bypass or an unlogged swap</div></div></div>
+  </div>
+</div></section>
+
+<section id="caveats"><div class="wrap">
+  <div class="kicker">§10 · caveats — read before building</div>
+  <h2>What is idealised, unverified, or marginal.</h2>
+  <div class="grid g2">
+    <div class="card"><ol style="padding-left:20px;margin:0">
+      <li><b>The 50 lb margin is 0.19 kg.</b> Expect PS-Lite wheels or the two-bag pack on the first prototypes.</li>
+      <li><b>Axle steel is assumed</b> (785 MPa). SF 2.1 at PS-125 depends on it; otherwise the carrier must support the axle on both sides.</li>
+      <li><b>The truss is idealised</b>: pin joints, tension-only cords, seat as five straight members, no joint compliance. Deflections are lower bounds.</li>
+      <li><b>Printed allowables</b> are a 0.5 guess on datasheet values until T-2/T-5 data exist for the chosen filament and printer.</li>
+      <li><b>Range</b> assumes 0.70 drive efficiency and textbook rolling-resistance coefficients. Dry-sand range (2.5 km) is a warning.</li></ol></div>
+    <div class="card"><ol start="6" style="padding-left:20px;margin:0">
+      <li><b>Deflated-tire packing</b> is the only way the 16 × 3.0 fits. Tubeless reseating on the playa must be proven.</li>
+      <li><b>Regulatory</b>: BRC only as an Accessibility Vehicle for a rider with a documented need; Ocean Beach only as an OPDMD. Nothing here is a permit.</li>
+      <li><b>Hot-swap while rolling</b> is a demonstrated protocol behaviour, not a procedure. Stop first.</li>
+      <li><b>Vendor variance</b> in hub-motor axles, wire exits and gear ratios — the carrier is parametric for that reason.</li>
+      <li><b>No prototype exists.</b> Everything here is analysis, CAD and simulation. Stage 0 is a single module on a rig.</li></ol></div>
+  </div>
+</div></section>
+
+<section id="sources"><div class="wrap">
+  <div class="kicker">sources — verified 2026-09-08</div>
+  <ol class="src">
+    <li>Burner Express Bus — luggage limits (62 linear inches, 50 lb per item; two items + carry-on): <a href="https://help.burningman.org/hc/en-us/articles/360024792811-BXBus-Is-there-a-limit-on-the-amount-of-gear-I-can-bring">help.burningman.org</a></li>
+    <li>Burner Express Bus information and terms: <a href="https://burnerexpress.burningman.org/burner-express-bus-information/">burnerexpress.burningman.org</a></li>
+    <li>Burning Man Journal, July 2026 — disallowed scooters and e-motorcycles in BRC: <a href="https://journal.burningman.org/2026/07/black-rock-city/survive-and-thrive/disallowed-vehicles-in-brc-2026/">journal.burningman.org</a></li>
+    <li>Accessibility Vehicles in Black Rock City: <a href="https://burningman.org/black-rock-city/bring-your-mutant-vehicle/accessibility-vehicles/">burningman.org</a> · <a href="https://help.burningman.org/hc/en-us/articles/360024793811-What-is-an-Accessibility-Vehicle">help.burningman.org</a></li>
+    <li>Survival Guide — getting around BRC, mutant vehicles and the DMV: <a href="https://survival.burningman.org/getting-around-brc/mutant-vehicles-the-dmv/">survival.burningman.org</a></li>
+    <li>ISO 7176 (wheelchairs) and EN 12184 (electrically powered wheelchairs and scooters) — referenced test families.</li>
+    <li>ADA — other power-driven mobility devices, 28 CFR 35.137 / 36.311; GGNRA policy to be checked at time of use.</li>
+    <li>BoardingFlow, the structural template for this project: <a href="https://boardingflow.outright.io/">boardingflow.outright.io</a></li>
+    <li>Rolling resistance and tire flotation rules of thumb: standard vehicle-dynamics references (Wong, <i>Theory of Ground Vehicles</i>) — treated as assumptions.</li>
+    <li>Dyneema SK78 5 mm single-braid MBL ≈ 18 kN — manufacturer datasheets; knot knock-down 0.5 per rigging practice.</li>
+  </ol>
+</div></section>
+
+<footer><div class="wrap">Playa Sprawler · an Outright Mental project · hardware CERN-OHL-S-2.0, software Apache-2.0, docs CC-BY-SA-4.0 · <a href="https://github.com/outrightmental/PlayaSprawler">source, analysis, CAD and simulator on GitHub</a> · built <span id="built"></span> from <code>analysis/results/results.json</code>.</div></footer>
+
+<script>
+const PS = {"results":{"project":"Playa Sprawler","version":"0.1.0","generated":"2026-09-08","classes":{"PS-100":{"payload_kg":100.0,"frame":{"LC1":{"worst":{"tube_sf_b":34.65,"tube_sf_s":40.29,"cord_sf":11.71,"fabric_sf":11.43},"max_d_mm":12.4,"mechanism":false,"members":{"SEAT_RAIL":-646,"CTRL_RAIL":212,"TOP_RAIL":10,"SEAT_CROSS":0,"SEAT_FRONT_EDGE":175,"REAR_CORD":223,"XF_1":0,"XF_2":0,"XR_1":16,"XR_2":16,"LEG_FL":-1237,"LEG_RL":-886,"POLE_L":-668,"POST_L":-394,"SIDE_CORD_L":768,"FORESTAY_L":488,"AFTSTAY_L":0,"BACKSTAY_L":0,"SIDE_STRAP_L":153,"SLING_FL":340,"SLING_RL":525,"LEG_FR":-1237,"LEG_RR":-886,"POLE_R":-668,"POST_R":-394,"SIDE_CORD_R":768,"FORESTAY_R":488,"AFTSTAY_R":0,"BACKSTAY_R":0,"SIDE_STRAP_R":153,"SLING_FR":340,"SLING_RR":525}},"LC2":{"worst":{"tube_sf_b":13.86,"tube_sf_s":16.12,"cord_sf":4.68,"fabric_sf":4.57},"max_d_mm":31.0,"mechanism":false,"members":{"SEAT_RAIL":-1614,"CTRL_RAIL":529,"TOP_RAIL":26,"SEAT_CROSS":0,"SEAT_FRONT_EDGE":438,"REAR_CORD":557,"XF_1":0,"XF_2":0,"XR_1":41,"XR_2":41,"LEG_FL":-3092,"LEG_RL":-2215,"POLE_L":-1671,"POST_L":-985,"SIDE_CORD_L":1921,"FORESTAY_L":1220,"AFTSTAY_L":0,"BACKSTAY_L":0,"SIDE_STRAP_L":383,"SLING_FL":849,"SLING_RL":1313,"LEG_FR":-3092,"LEG_RR":-2215,"POLE_R":-1671,"POST_R":-985,"SIDE_CORD_R":1921,"FORESTAY_R":1220,"AFTSTAY_R":0,"BACKSTAY_R":0,"SIDE_STRAP_R":383,"SLING_FR":849,"SLING_RR":1313}},"LC3":{"worst":{"tube_sf_b":15.71,"tube_sf_s":18.27,"cord_sf":6.01,"fabric_sf":7.11},"max_d_mm":42.4,"mechanism":false,"members":{"SEAT_RAIL":-1293,"CTRL_RAIL":0,"TOP_RAIL":-152,"SEAT_CROSS":0,"SEAT_FRONT_EDGE":441,"REAR_CORD":0,"XF_1":0,"XF_2":111,"XR_1":0,"XR_2":0,"LEG_FL":-2728,"LEG_RL":-1707,"POLE_L":-1563,"POST_L":-673,"SIDE_CORD_L":1498,"FORESTAY_L":1273,"AFTSTAY_L":0,"BACKSTAY_L":474,"SIDE_STRAP_L":843,"SLING_FL":340,"SLING_RL":525,"LEG_FR":-2053,"LEG_RR":-2055,"POLE_R":-668,"POST_R":-1252,"SIDE_CORD_R":1199,"FORESTAY_R":940,"AFTSTAY_R":788,"BACKSTAY_R":0,"SIDE_STRAP_R":153,"SLING_FR":340,"SLING_RR":525}},"LC5":{"worst":{"tube_sf_b":22.86,"tube_sf_s":26.58,"cord_sf":8.2,"fabric_sf":8.7},"max_d_mm":26.6,"mechanism":false,"members":{"SEAT_RAIL":-982,"CTRL_RAIL":234,"TOP_RAIL":-15,"SEAT_CROSS":0,"SEAT_FRONT_EDGE":382,"REAR_CORD":341,"XF_1":0,"XF_2":0,"XR_1":25,"XR_2":25,"LEG_FL":-1875,"LEG_RL":-1358,"POLE_L":-1002,"POST_L":-611,"SIDE_CORD_L":0,"FORESTAY_L":1098,"AFTSTAY_L":0,"BACKSTAY_L":0,"SIDE_STRAP_L":690,"SLING_FL":340,"SLING_RL":525,"LEG_FR":-1875,"LEG_RR":-1358,"POLE_R":-1002,"POST_R":-611,"SIDE_CORD_R":0,"FORESTAY_R":1098,"AFTSTAY_R":0,"BACKSTAY_R":0,"SIDE_STRAP_R":690,"SLING_FR":340,"SLING_RR":525}}},"stability":{"vehicle_kg":21.689999999999998,"cg_z_mm":694.4449009778947,"tip_lat_g":0.4975196729265031,"tip_long_g":0.47519968759984377,"side_slope_deg":26.451248601041364,"a_lat_limit_g":0.25,"margin_vs_tip":1.9900786917060125,"r_min_at_vmax_m":2.0135664036445555,"stop_dist_m":0.8389860015185647,"yaw_rate_rule":"|omega| * |v| <= a_lat_max, omega = (vR - vL) / track"},"v_by_radius":[[0.5,1.1073617295175051],[1.0,1.5660459763365826],[1.5,1.9180067778816632],[2.0,2.2147234590350102],[3.0,2.2222222222222223],[5.0,2.2222222222222223]],"energy":[{"surface":"playa, hard","grade":0.0,"F_N":23.875578,"p_el_W":85.79548571428572,"per_wheel_W":18.94887142857143,"torque_Nm":1.36389239325,"range_km":27.16972787779044,"hours":3.396215984723805,"torque_ok":true,"power_ok":true},{"surface":"playa, hard","grade":0.1,"F_N":143.25346800000003,"p_el_W":464.7729142857144,"per_wheel_W":113.6932285714286,"torque_Nm":8.183354359500003,"range_km":5.015438568709313,"hours":0.6269298210886641,"torque_ok":true,"power_ok":true},{"surface":"playa, soft/dusty","grade":0.0,"F_N":71.626734,"p_el_W":237.38645714285718,"per_wheel_W":56.846614285714296,"torque_Nm":4.0916771797500004,"range_km":9.819599770163803,"hours":1.2274499712704754,"torque_ok":true,"power_ok":true},{"surface":"playa, soft/dusty","grade":0.1,"F_N":191.004624,"p_el_W":616.3638857142857,"per_wheel_W":151.59097142857144,"torque_Nm":10.911139146,"range_km":3.7819217738538122,"hours":0.47274022173172653,"torque_ok":true,"power_ok":true},{"surface":"beach, wet firm","grade":0.0,"F_N":59.688945000000004,"p_el_W":199.48871428571434,"per_wheel_W":47.372178571428584,"torque_Nm":3.4097309831250002,"range_km":11.685072052053068,"hours":1.4606340065066334,"torque_ok":true,"power_ok":true},{"surface":"beach, wet firm","grade":0.1,"F_N":179.06683500000003,"p_el_W":578.466142857143,"per_wheel_W":142.11653571428576,"torque_Nm":10.229192949375001,"range_km":4.029691329014686,"hours":0.5037114161268358,"torque_ok":true,"power_ok":true},{"surface":"beach, dry loose","grade":0.0,"F_N":238.75578000000002,"p_el_W":767.9548571428573,"per_wheel_W":189.48871428571434,"torque_Nm":13.638923932500001,"range_km":3.0353867526439418,"hours":0.3794233440804927,"torque_ok":true,"power_ok":true},{"surface":"beach, dry loose","grade":0.1,"F_N":358.13367000000005,"p_el_W":1146.932285714286,"per_wheel_W":284.2330714285715,"torque_Nm":20.458385898750002,"range_km":2.03241292361761,"hours":0.25405161545220123,"torque_ok":false,"power_ok":false}],"axle":{"F_N":639.4280624999999,"M_Nm":28.774262812499995,"sigma_MPa":226.1514153301075,"tau_MPa":137.54130884484783,"vm_MPa":328.47724056937676,"sf":2.3898154972298675,"sf_target":1.5}},"PS-125":{"payload_kg":125.0,"frame":{"LC1":{"worst":{"tube_sf_b":27.72,"tube_sf_s":32.23,"cord_sf":9.37,"fabric_sf":9.14},"max_d_mm":15.5,"mechanism":false,"members":{"SEAT_RAIL":-807,"CTRL_RAIL":264,"TOP_RAIL":13,"SEAT_CROSS":0,"SEAT_FRONT_EDGE":219,"REAR_CORD":279,"XF_1":0,"XF_2":0,"XR_1":20,"XR_2":20,"LEG_FL":-1546,"LEG_RL":-1108,"POLE_L":-835,"POST_L":-492,"SIDE_CORD_L":961,"FORESTAY_L":610,"AFTSTAY_L":0,"BACKSTAY_L":0,"SIDE_STRAP_L":192,"SLING_FL":424,"SLING_RL":656,"LEG_FR":-1546,"LEG_RR":-1108,"POLE_R":-835,"POST_R":-492,"SIDE_CORD_R":961,"FORESTAY_R":610,"AFTSTAY_R":0,"BACKSTAY_R":0,"SIDE_STRAP_R":192,"SLING_FR":424,"SLING_RR":656}},"LC2":{"worst":{"tube_sf_b":11.09,"tube_sf_s":12.89,"cord_sf":3.75,"fabric_sf":3.66},"max_d_mm":38.8,"mechanism":false,"members":{"SEAT_RAIL":-2017,"CTRL_RAIL":661,"TOP_RAIL":32,"SEAT_CROSS":0,"SEAT_FRONT_EDGE":548,"REAR_CORD":696,"XF_1":0,"XF_2":0,"XR_1":51,"XR_2":51,"LEG_FL":-3865,"LEG_RL":-2769,"POLE_L":-2088,"POST_L":-1231,"SIDE_CORD_L":2401,"FORESTAY_L":1525,"AFTSTAY_L":0,"BACKSTAY_L":0,"SIDE_STRAP_L":479,"SLING_FL":1061,"SLING_RL":1641,"LEG_FR":-3865,"LEG_RR":-2769,"POLE_R":-2088,"POST_R":-1231,"SIDE_CORD_R":2401,"FORESTAY_R":1525,"AFTSTAY_R":0,"BACKSTAY_R":0,"SIDE_STRAP_R":479,"SLING_FR":1061,"SLING_RR":1641}},"LC3":{"worst":{"tube_sf_b":12.57,"tube_sf_s":14.62,"cord_sf":4.81,"fabric_sf":5.69},"max_d_mm":53.0,"mechanism":false,"members":{"SEAT_RAIL":-1617,"CTRL_RAIL":0,"TOP_RAIL":-190,"SEAT_CROSS":0,"SEAT_FRONT_EDGE":551,"REAR_CORD":0,"XF_1":0,"XF_2":139,"XR_1":0,"XR_2":0,"LEG_FL":-3409,"LEG_RL":-2134,"POLE_L":-1954,"POST_L":-842,"SIDE_CORD_L":1872,"FORESTAY_L":1591,"AFTSTAY_L":0,"BACKSTAY_L":592,"SIDE_STRAP_L":1054,"SLING_FL":424,"SLING_RL":656,"LEG_FR":-2567,"LEG_RR":-2569,"POLE_R":-835,"POST_R":-1565,"SIDE_CORD_R":1498,"FORESTAY_R":1175,"AFTSTAY_R":984,"BACKSTAY_R":0,"SIDE_STRAP_R":192,"SLING_FR":424,"SLING_RR":656}},"LC5":{"worst":{"tube_sf_b":18.29,"tube_sf_s":21.27,"cord_sf":6.56,"fabric_sf":6.96},"max_d_mm":33.2,"mechanism":false,"members":{"SEAT_RAIL":-1227,"CTRL_RAIL":293,"TOP_RAIL":-19,"SEAT_CROSS":0,"SEAT_FRONT_EDGE":477,"REAR_CORD":427,"XF_1":0,"XF_2":0,"XR_1":32,"XR_2":32,"LEG_FL":-2343,"LEG_RL":-1697,"POLE_L":-1253,"POST_L":-764,"SIDE_CORD_L":0,"FORESTAY_L":1373,"AFTSTAY_L":0,"BACKSTAY_L":0,"SIDE_STRAP_L":862,"SLING_FL":424,"SLING_RL":656,"LEG_FR":-2343,"LEG_RR":-1697,"POLE_R":-1253,"POST_R":-764,"SIDE_CORD_R":0,"FORESTAY_R":1373,"AFTSTAY_R":0,"BACKSTAY_R":0,"SIDE_STRAP_R":862,"SLING_FR":424,"SLING_RR":656}}},"stability":{"vehicle_kg":21.689999999999998,"cg_z_mm":709.0258367986911,"tip_lat_g":0.48728830751776325,"tip_long_g":0.4654273270068361,"side_slope_deg":25.979432722634094,"a_lat_limit_g":0.25,"margin_vs_tip":1.949153230071053,"r_min_at_vmax_m":2.0135664036445555,"stop_dist_m":0.8389860015185647,"yaw_rate_rule":"|omega| * |v| <= a_lat_max, omega = (vR - vL) / track"},"v_by_radius":[[0.5,1.1073617295175051],[1.0,1.5660459763365826],[1.5,1.9180067778816632],[2.0,2.2147234590350102],[3.0,2.2222222222222223],[5.0,2.2222222222222223]],"energy":[{"surface":"playa, hard","grade":0.0,"F_N":28.780578000000002,"p_el_W":101.3669142857143,"per_wheel_W":22.841728571428575,"torque_Nm":1.64409051825,"range_km":22.996063522558217,"hours":2.874507940319777,"torque_ok":true,"power_ok":true},{"surface":"playa, hard","grade":0.1,"F_N":172.683468,"p_el_W":558.2014857142858,"per_wheel_W":137.05037142857145,"torque_Nm":9.864543109500001,"range_km":4.175983152422381,"hours":0.5219978940527976,"torque_ok":true,"power_ok":true},{"surface":"playa, soft/dusty","grade":0.0,"F_N":86.341734,"p_el_W":284.1007428571429,"per_wheel_W":68.52518571428573,"torque_Nm":4.932271554750001,"range_km":8.204976785900694,"hours":1.0256220982375868,"torque_ok":true,"power_ok":true},{"surface":"playa, soft/dusty","grade":0.1,"F_N":230.24462400000002,"p_el_W":740.9353142857144,"per_wheel_W":182.7338285714286,"torque_Nm":13.152724146,"range_km":3.1460776063119598,"hours":0.39325970078899497,"torque_ok":true,"power_ok":true},{"surface":"beach, wet firm","grade":0.0,"F_N":71.951445,"p_el_W":238.41728571428578,"per_wheel_W":57.104321428571446,"torque_Nm":4.110226295625001,"range_km":9.77714343578875,"hours":1.2221429294735937,"torque_ok":true,"power_ok":true},{"surface":"beach, wet firm","grade":0.1,"F_N":215.85433500000005,"p_el_W":695.2518571428574,"per_wheel_W":171.31296428571434,"torque_Nm":12.330678886875003,"range_km":3.35279938636831,"hours":0.41909992329603873,"torque_ok":true,"power_ok":true},{"surface":"beach, dry loose","grade":0.0,"F_N":287.80578,"p_el_W":923.6691428571431,"per_wheel_W":228.41728571428578,"torque_Nm":16.440905182500003,"range_km":2.523674216061285,"hours":0.31545927700766063,"torque_ok":true,"power_ok":true},{"surface":"beach, dry loose","grade":0.1,"F_N":431.7086700000001,"p_el_W":1380.5037142857148,"per_wheel_W":342.6259285714287,"torque_Nm":24.661357773750005,"range_km":1.688543084584239,"hours":0.21106788557302988,"torque_ok":false,"power_ok":false}],"axle":{"F_N":792.7093125,"M_Nm":35.671919062499995,"sigma_MPa":280.3635678207844,"tau_MPa":137.54130884484783,"vm_MPa":367.90836505502426,"sf":2.133683478174234,"sf_target":1.5}},"PS-150":{"payload_kg":150.0,"frame":{"LC1":{"worst":{"tube_sf_b":23.1,"tube_sf_s":26.86,"cord_sf":7.81,"fabric_sf":7.62},"max_d_mm":18.6,"mechanism":false,"members":{"SEAT_RAIL":-968,"CTRL_RAIL":317,"TOP_RAIL":15,"SEAT_CROSS":0,"SEAT_FRONT_EDGE":263,"REAR_CORD":334,"XF_1":0,"XF_2":0,"XR_1":25,"XR_2":25,"LEG_FL":-1855,"LEG_RL":-1329,"POLE_L":-1002,"POST_L":-591,"SIDE_CORD_L":1153,"FORESTAY_L":732,"AFTSTAY_L":0,"BACKSTAY_L":0,"SIDE_STRAP_L":230,"SLING_FL":509,"SLING_RL":788,"LEG_FR":-1855,"LEG_RR":-1329,"POLE_R":-1002,"POST_R":-591,"SIDE_CORD_R":1153,"FORESTAY_R":732,"AFTSTAY_R":0,"BACKSTAY_R":0,"SIDE_STRAP_R":230,"SLING_FR":509,"SLING_RR":788}},"LC2":{"worst":{"tube_sf_b":9.24,"tube_sf_s":10.74,"cord_sf":3.12,"fabric_sf":3.05},"max_d_mm":46.5,"mechanism":false,"members":{"SEAT_RAIL":-2421,"CTRL_RAIL":793,"TOP_RAIL":38,"SEAT_CROSS":0,"SEAT_FRONT_EDGE":657,"REAR_CORD":836,"XF_1":0,"XF_2":0,"XR_1":61,"XR_2":61,"LEG_FL":-4638,"LEG_RL":-3323,"POLE_L":-2506,"POST_L":-1477,"SIDE_CORD_L":2882,"FORESTAY_L":1830,"AFTSTAY_L":0,"BACKSTAY_L":0,"SIDE_STRAP_L":575,"SLING_FL":1273,"SLING_RL":1969,"LEG_FR":-4638,"LEG_RR":-3323,"POLE_R":-2506,"POST_R":-1477,"SIDE_CORD_R":2882,"FORESTAY_R":1830,"AFTSTAY_R":0,"BACKSTAY_R":0,"SIDE_STRAP_R":575,"SLING_FR":1273,"SLING_RR":1969}},"LC3":{"worst":{"tube_sf_b":10.48,"tube_sf_s":12.18,"cord_sf":4.01,"fabric_sf":4.74},"max_d_mm":63.7,"mechanism":false,"members":{"SEAT_RAIL":-1940,"CTRL_RAIL":0,"TOP_RAIL":-227,"SEAT_CROSS":0,"SEAT_FRONT_EDGE":661,"REAR_CORD":0,"XF_1":0,"XF_2":166,"XR_1":0,"XR_2":0,"LEG_FL":-4091,"LEG_RL":-2560,"POLE_L":-2344,"POST_L":-1010,"SIDE_CORD_L":2247,"FORESTAY_L":1909,"AFTSTAY_L":0,"BACKSTAY_L":711,"SIDE_STRAP_L":1265,"SLING_FL":509,"SLING_RL":788,"LEG_FR":-3080,"LEG_RR":-3083,"POLE_R":-1002,"POST_R":-1877,"SIDE_CORD_R":1798,"FORESTAY_R":1409,"AFTSTAY_R":1181,"BACKSTAY_R":0,"SIDE_STRAP_R":230,"SLING_FR":509,"SLING_RR":788}},"LC5":{"worst":{"tube_sf_b":15.24,"tube_sf_s":17.72,"cord_sf":5.46,"fabric_sf":5.8},"max_d_mm":39.9,"mechanism":false,"members":{"SEAT_RAIL":-1472,"CTRL_RAIL":352,"TOP_RAIL":-23,"SEAT_CROSS":0,"SEAT_FRONT_EDGE":572,"REAR_CORD":512,"XF_1":0,"XF_2":0,"XR_1":38,"XR_2":38,"LEG_FL":-2812,"LEG_RL":-2036,"POLE_L":-1504,"POST_L":-917,"SIDE_CORD_L":0,"FORESTAY_L":1647,"AFTSTAY_L":0,"BACKSTAY_L":0,"SIDE_STRAP_L":1035,"SLING_FL":509,"SLING_RL":788,"LEG_FR":-2812,"LEG_RR":-2036,"POLE_R":-1504,"POST_R":-917,"SIDE_CORD_R":0,"FORESTAY_R":1647,"AFTSTAY_R":0,"BACKSTAY_R":0,"SIDE_STRAP_R":1035,"SLING_FR":509,"SLING_RR":788}}},"stability":{"vehicle_kg":21.689999999999998,"cg_z_mm":719.3604752752053,"tip_lat_g":0.4802877164857053,"tip_long_g":0.4587408001165926,"side_slope_deg":25.654402353819016,"a_lat_limit_g":0.25,"margin_vs_tip":1.9211508659428211,"r_min_at_vmax_m":2.0135664036445555,"stop_dist_m":0.8389860015185647,"yaw_rate_rule":"|omega| * |v| <= a_lat_max, omega = (vR - vL) / track"},"v_by_radius":[[0.5,1.1073617295175051],[1.0,1.5660459763365826],[1.5,1.9180067778816632],[2.0,2.2147234590350102],[3.0,2.2222222222222223],[5.0,2.2222222222222223]],"energy":[{"surface":"playa, hard","grade":0.0,"F_N":33.685578,"p_el_W":116.93834285714287,"per_wheel_W":26.734585714285718,"torque_Nm":1.9242886432500002,"range_km":19.933923664778654,"hours":2.4917404580973317,"torque_ok":true,"power_ok":true},{"surface":"playa, hard","grade":0.1,"F_N":202.113468,"p_el_W":651.6300571428573,"per_wheel_W":160.4075142857143,"torque_Nm":11.545731859500002,"range_km":3.577244441763012,"hours":0.4471555552203765,"torque_ok":true,"power_ok":true},{"surface":"playa, soft/dusty","grade":0.0,"F_N":101.05673399999999,"p_el_W":330.81502857142857,"per_wheel_W":80.20375714285714,"torque_Nm":5.77286592975,"range_km":7.0463546050680375,"hours":0.8807943256335047,"torque_ok":true,"power_ok":true},{"surface":"playa, soft/dusty","grade":0.1,"F_N":269.484624,"p_el_W":865.506742857143,"per_wheel_W":213.87668571428574,"torque_Nm":15.394309146000001,"range_km":2.693266134825193,"hours":0.33665826685314915,"torque_ok":true,"power_ok":true},{"surface":"beach, wet firm","grade":0.0,"F_N":84.21394500000001,"p_el_W":277.3458571428572,"per_wheel_W":66.8364642857143,"torque_Nm":4.810721608125001,"range_km":8.404812763434617,"hours":1.050601595429327,"torque_ok":true,"power_ok":true},{"surface":"beach, wet firm","grade":0.1,"F_N":252.64183500000004,"p_el_W":812.0375714285716,"per_wheel_W":200.5093928571429,"torque_Nm":14.432164824375002,"range_km":2.870606092645607,"hours":0.3588257615807009,"torque_ok":true,"power_ok":true},{"surface":"beach, dry loose","grade":0.0,"F_N":336.85578000000004,"p_el_W":1079.3834285714288,"per_wheel_W":267.3458571428572,"torque_Nm":19.242886432500004,"range_km":2.159603286744125,"hours":0.26995041084301563,"torque_ok":true,"power_ok":false},{"surface":"beach, dry loose","grade":0.1,"F_N":505.2836700000001,"p_el_W":1614.0751428571432,"per_wheel_W":401.0187857142858,"torque_Nm":28.864329648750005,"range_km":1.4441954640808896,"hours":0.1805244330101112,"torque_ok":false,"power_ok":false}],"axle":{"F_N":945.9905625,"M_Nm":42.5695753125,"sigma_MPa":334.5757203114612,"tau_MPa":137.54130884484783,"vm_MPa":410.72344410587834,"sf":1.9112617291883605,"sf_target":1.5}}},"packing":{"bag_inner":[640.0,430.0,430.0],"linear_in":61.417322834645674,"stack_len":540.0,"wheel_fits_inflated":false,"wheel_fits_deflated":true,"leftover_len":100.0,"longest_segment":376.0319135392633,"tubes_fit":true,"void_L":31.98759868246047,"total_kg":22.49,"limit_kg":22.6796185,"margin_kg":0.1896185000000017,"margin_pct":0.8360744692420716,"ok":true,"segments":[["SEAT_RAIL",360.0,1,360.0],["CTRL_RAIL",560.0,2,280.0],["TOP_RAIL",460.0,2,230.0],["LEG_FL",376.0319135392633,1,376.0319135392633],["LEG_RL",376.0319135392633,1,376.0319135392633],["POLE_L",490.5099387372289,2,245.25496936861444],["POST_L",161.55494421403512,1,161.55494421403512],["LEG_FR",376.0319135392633,1,376.0319135392633],["LEG_RR",376.0319135392633,1,376.0319135392633],["POLE_R",490.5099387372289,2,245.25496936861444],["POST_R",161.55494421403512,1,161.55494421403512]]}},"nodes":{"HUB_L":[0.0,180.0,450.0],"DOCK_FL":[330.0,280.0,300.0],"DOCK_RL":[-330.0,280.0,300.0],"FTIP_L":[60.0,180.0,600.0],"RTIP_L":[-340.0,230.0,800.0],"SEAT_L":[-140.0,205.0,550.0],"HUB_R":[0.0,-180.0,450.0],"DOCK_FR":[330.0,-280.0,300.0],"DOCK_RR":[-330.0,-280.0,300.0],"FTIP_R":[60.0,-180.0,600.0],"RTIP_R":[-340.0,-230.0,800.0],"SEAT_R":[-140.0,-205.0,550.0]},"members":[{"n":"SEAT_RAIL","a":"HUB_L","b":"HUB_R","k":"tube"},{"n":"CTRL_RAIL","a":"DOCK_FL","b":"DOCK_FR","k":"tube"},{"n":"TOP_RAIL","a":"RTIP_L","b":"RTIP_R","k":"tube"},{"n":"SEAT_CROSS","a":"SEAT_L","b":"SEAT_R","k":"fabric"},{"n":"SEAT_FRONT_EDGE","a":"FTIP_L","b":"FTIP_R","k":"fabric"},{"n":"REAR_CORD","a":"DOCK_RL","b":"DOCK_RR","k":"cord"},{"n":"XF_1","a":"DOCK_FL","b":"HUB_R","k":"cord"},{"n":"XF_2","a":"DOCK_FR","b":"HUB_L","k":"cord"},{"n":"XR_1","a":"DOCK_RL","b":"HUB_R","k":"cord"},{"n":"XR_2","a":"DOCK_RR","b":"HUB_L","k":"cord"},{"n":"LEG_FL","a":"HUB_L","b":"DOCK_FL","k":"tube"},{"n":"LEG_RL","a":"HUB_L","b":"DOCK_RL","k":"tube"},{"n":"POLE_L","a":"HUB_L","b":"RTIP_L","k":"tube"},{"n":"POST_L","a":"HUB_L","b":"FTIP_L","k":"tube"},{"n":"SIDE_CORD_L","a":"DOCK_FL","b":"DOCK_RL","k":"cord"},{"n":"FORESTAY_L","a":"FTIP_L","b":"DOCK_FL","k":"cord"},{"n":"AFTSTAY_L","a":"FTIP_L","b":"DOCK_RL","k":"cord"},{"n":"BACKSTAY_L","a":"RTIP_L","b":"DOCK_RR","k":"cord"},{"n":"SIDE_STRAP_L","a":"FTIP_L","b":"RTIP_L","k":"fabric"},{"n":"SLING_FL","a":"FTIP_L","b":"SEAT_L","k":"fabric"},{"n":"SLING_RL","a":"SEAT_L","b":"RTIP_L","k":"fabric"},{"n":"LEG_FR","a":"HUB_R","b":"DOCK_FR","k":"tube"},{"n":"LEG_RR","a":"HUB_R","b":"DOCK_RR","k":"tube"},{"n":"POLE_R","a":"HUB_R","b":"RTIP_R","k":"tube"},{"n":"POST_R","a":"HUB_R","b":"FTIP_R","k":"tube"},{"n":"SIDE_CORD_R","a":"DOCK_FR","b":"DOCK_RR","k":"cord"},{"n":"FORESTAY_R","a":"FTIP_R","b":"DOCK_FR","k":"cord"},{"n":"AFTSTAY_R","a":"FTIP_R","b":"DOCK_RR","k":"cord"},{"n":"BACKSTAY_R","a":"RTIP_R","b":"DOCK_RL","k":"cord"},{"n":"SIDE_STRAP_R","a":"FTIP_R","b":"RTIP_R","k":"fabric"},{"n":"SLING_FR","a":"FTIP_R","b":"SEAT_R","k":"fabric"},{"n":"SLING_RR","a":"SEAT_R","b":"RTIP_R","k":"fabric"}],"params":{"version":"0.1.0","classes":{"PS-100":100.0,"PS-125":125.0,"PS-150":150.0},"default_class":"PS-125","bag_mm":[660.0,450.0,450.0],"bag_in":62.0,"bag_lb":50.0,"bag_kg":22.6796185,"v_max_kmh":8.0,"wheel_od":457.0,"wheel_od_deflated":400.0,"tire":"16 x 3.0 (ISO 76-305), folding bead, tubeless-ready","module_width":135.0,"track":691.0,"wheelbase":660.0,"battery":{"config":"7s1p 18650, 3.4 Ah","v_nom":25.2,"v_max":29.4,"v_min":21.0,"wh":85.7,"usable_frac":0.85,"mass_kg":0.41,"discharge_A_max":15.0},"motor":{"type":"mini geared hub motor, no-clutch (regen-capable) variant preferred","nominal_W":250.0,"peak_W":500.0,"torque_rated_Nm":20.0,"torque_peak_Nm":35.0,"mass_kg":1.9},"mass_budget":{"Wheel module (x4)":17.4,"Frame tubes (carbon)":0.74,"Joiners (printed) + hardware":0.9,"Cords + tensioners":0.15,"Seat canvas":0.7,"Control modules (x2)":0.6,"Bus node (switch + supervisor + power)":0.55,"Harness (M12 data + power)":0.65,"Bag":0.8},"module_breakdown":{"hub motor":1.9,"rim + spokes":0.62,"tire (tubeless) + sealant":0.8,"battery pack":0.41,"controller + node board":0.15,"carrier (printed + Al torque plates)":0.35,"connectors + fasteners":0.1},"sf":{"tube":2.0,"cord":3.0,"fabric":3.0,"print":1.5,"axle":1.5},"load_cases":{"LC1":{"name":"Static seated","vert":1.0,"lat":0.0,"back":0.0,"kind":"deflection"},"LC2":{"name":"Dynamic vertical (bump/drop)","vert":2.5,"lat":0.0,"back":0.0,"kind":"ultimate"},"LC3":{"name":"Lateral skid / turn","vert":1.0,"lat":0.6,"back":0.0,"kind":"ultimate"},"LC5":{"name":"Backrest lean","vert":1.0,"lat":0.0,"back":0.5,"kind":"ultimate"}},"comms_timeout_ms":200,"a_lat_g":0.25,"tube":"roll-wrapped carbon fibre tube, 25 mm OD x 22 mm ID (1.5 mm wall)","cord":"5 mm Dyneema SK78 single braid; spliced eyes preferred, knots allowed with the 0.5 knockdown below","crr":{"playa, hard":0.02,"playa, soft/dusty":0.06,"beach, wet firm":0.05,"beach, dry loose":0.2}}};
+(function () {
+  'use strict';
+  const P = PS.params, R = PS.results, C = R.classes, PK = R.packing;
+  const DEF = P.default_class, D = C[DEF];
+  const $ = (s, el) => (el || document).querySelector(s);
+  const fmt = (x, d) => Number(x).toLocaleString('en-US', { maximumFractionDigits: d == null ? 1 : d, minimumFractionDigits: d == null ? 0 : d });
+  const moduleMass = Object.values(P.module_breakdown).reduce((a, b) => a + b, 0);
+  const eUsable = 4 * P.battery.wh * P.battery.usable_frac;
+
+  // ---------- simple value binding
+  const V = {
+    version: P.version, bag_lb: fmt(P.bag_lb, 0), timeout: P.comms_timeout_ms,
+    bag_dims: P.bag_mm.map(x => fmt(x, 0)).join(' × '), bag_in: fmt(PK.linear_in, 1),
+    mass_total: fmt(PK.total_kg, 2), mass_limit: fmt(PK.limit_kg, 2), mass_margin: (PK.margin_kg >= 0 ? '+' : '') + fmt(PK.margin_kg, 2) + ' kg (' + fmt(PK.margin_pct, 1) + ' %)',
+    mass_margin_kg: fmt(PK.margin_kg, 2), vmax: fmt(P.v_max_kmh, 0), wh: fmt(P.battery.wh, 1), alat: P.a_lat_g,
+    tire: P.tire, wheel_od: fmt(P.wheel_od, 0), wheel_od_deflated: fmt(P.wheel_od_deflated, 0), module_width: fmt(P.module_width, 0),
+    module_mass: fmt(moduleMass, 2), tube: P.tube, cord: P.cord, e_usable: fmt(eUsable, 0),
+    stack: fmt(PK.stack_len, 0), longest: fmt(PK.longest_segment, 0),
+  };
+  document.querySelectorAll('[data-v]').forEach(el => { const k = el.getAttribute('data-v'); if (k in V) el.textContent = V[k]; });
+  $('#built').textContent = R.generated;
+
+  // ---------- hero: side view generated from the frame nodes
+  (function hero() {
+    const svg = $('#hero-svg'), N = PS.nodes;
+    const k = 0.36, ox = 300, oy = 335;
+    const X = x => ox + x * k, Z = z => oy - z * k;
+    const r = P.wheel_od / 2;
+    let out = [];
+    out.push(`<line x1="0" y1="${Z(0)}" x2="560" y2="${Z(0)}" stroke="#d9d6cc" stroke-width="1.5"/>`);
+    const wheel = (x, extra) => `<g class="${extra || ''}">
+      <circle class="tire" cx="${X(x)}" cy="${Z(r)}" r="${r * k}"/>
+      <circle class="rim" cx="${X(x)}" cy="${Z(r)}" r="${r * k * 0.66}"/>
+      <rect class="brick" x="${X(x) - 100 * k}" y="${Z(284)}" width="${200 * k}" height="${96 * k}" rx="5"/>
+      <rect x="${X(x) - 60 * k}" y="${Z(300)}" width="${120 * k}" height="${16 * k}" fill="#15171c"/>
+      <circle cx="${X(x)}" cy="${Z(r)}" r="5" fill="#15171c"/></g>`;
+    // rear-right module is the one that gets swapped (drawn twice: out and in)
+    out.push(wheel(N.DOCK_FL[0]));
+    out.push(wheel(N.DOCK_RL[0], 'swap-out'));
+    out.push(wheel(N.DOCK_RL[0], 'swap-in'));
+    for (const m of PS.members) {
+      const a = N[m.a], b = N[m.b];
+      if (!(m.a.endsWith('_L') || m.a.endsWith('L')) || !(m.b.endsWith('_L') || m.b.endsWith('L'))) continue; // left side only
+      if (m.a === m.b) continue;
+      if (m.k === 'fabric') continue;
+      const cls = m.k === 'tube' ? 'tube' : 'cord';
+      if (Math.abs(a[0] - b[0]) < 1 && Math.abs(a[2] - b[2]) < 1) continue; // rails: seen end-on
+      out.push(`<line class="${cls}" x1="${X(a[0])}" y1="${Z(a[2])}" x2="${X(b[0])}" y2="${Z(b[2])}"/>`);
+    }
+    // seat sling: front tip -> low point -> rear tip
+    const f = N.FTIP_L, s = N.SEAT_L, rt = N.RTIP_L;
+    out.push(`<path class="fab" d="M${X(f[0])},${Z(f[2])} Q${X(s[0] + 40)},${Z(s[2] - 60)} ${X(rt[0])},${Z(rt[2])}"/>`);
+    for (const nm of ['HUB_L', 'DOCK_FL', 'DOCK_RL', 'FTIP_L', 'RTIP_L']) {
+      const p = N[nm]; out.push(`<circle class="joint" cx="${X(p[0])}" cy="${Z(p[2])}" r="6"/>`);
+    }
+    out.push(`<text x="12" y="${Z(0) + 18}" font-family="JetBrains Mono,monospace" font-size="11" fill="#8a8f9a">RR module: out, spare in — pin, rail, two M12s</text>`);
+    out.push(`<text x="548" y="20" text-anchor="end" font-family="JetBrains Mono,monospace" font-size="11" fill="#8a8f9a">side view · generated from ps_params.py · x → forward</text>`);
+    svg.innerHTML = out.join('');
+    // ticker + mode badge synced to the 9 s CSS loop
+    const tick = $('#hero-ticker'), badge = $('#hero-mode');
+    let seq = 1200, t0 = performance.now(), lines = [];
+    function push(html) { lines.push(html); if (lines.length > 4) lines.shift(); tick.innerHTML = lines.map(l => `<div>${l}</div>`).join(''); }
+    setInterval(() => {
+      const t = ((performance.now() - t0) / 1000) % 9; seq += 5;
+      const phase = t < 3.4 ? 'run' : t < 4.6 ? 'pulled' : t < 5.9 ? 'stop' : 'run2';
+      if (phase === 'run' || phase === 'run2') { badge.textContent = 'RUN'; badge.className = 'modebadge'; }
+      else { badge.textContent = 'STOP'; badge.className = 'modebadge stop'; }
+      const v = (0.55 + 0.1 * Math.sin(t * 2)).toFixed(2);
+      if (phase === 'run') push(`<b>ctrl/tread/left</b> {v: ${v}, seq: ${seq}} · <b>wheel/RR/status</b> {v_kmh: ${(v * 8).toFixed(1)}, soc: 0.86}`);
+      else if (phase === 'pulled') push(`<i>wheel/RR/status silent 250 ms</i> → <b>veh/mode</b> {mode: "stop"} — every wheel ramps to 0 in 300 ms`);
+      else if (phase === 'stop') push(`<b>node/W-0042/hello</b> {dock: "RR", rating: "PS-125"} · read from the dock ID pin, no configuration`);
+      else push(`<b>veh/mode</b> {mode: "run", rating: "PS-125"} · <b>ctrl/tread/right</b> {v: ${v}, seq: ${seq + 1}}`);
+    }, 700);
+  })();
+
+  // ---------- evidence tables
+  (function evidence() {
+    const lcName = { LC1: 'LC1 static seated', LC2: 'LC2 2.5 g vertical', LC3: 'LC3 lateral skid', LC5: 'LC5 backrest lean' };
+    let h = `<tr><th>Case</th>${Object.keys(C).map(c => `<th colspan="4">${c}</th>`).join('')}</tr><tr><th></th>${Object.keys(C).map(() => '<th class="n">defl. mm</th><th class="n">tube SF</th><th class="n">cord SF</th><th class="n">seat SF</th>').join('')}</tr>`;
+    for (const lc of Object.keys(D.frame)) {
+      h += `<tr><td>${lcName[lc] || lc}</td>`;
+      for (const c of Object.keys(C)) {
+        const w = C[c].frame[lc].worst, ult = lc !== 'LC1';
+        const cell = (v, t) => v == null ? '<td class="n">—</td>' : `<td class="n ${ult ? (v >= t ? 'pass' : 'fail') : ''}">${fmt(v, 1)}</td>`;
+        h += `<td class="n">${fmt(C[c].frame[lc].max_d_mm, 1)}</td>${cell(w.tube_sf_b, P.sf.tube)}${cell(w.cord_sf, P.sf.cord)}${cell(w.fabric_sf, P.sf.fabric)}`;
+      }
+      h += '</tr>';
+    }
+    $('#frame-table').innerHTML = h;
+    const s = D.stability;
+    $('#stab-text').innerHTML = `Combined CG ${fmt(s.cg_z_mm, 0)} mm high on a ${fmt(P.track, 0)} mm track and ${fmt(P.wheelbase, 0)} mm wheelbase. Quasi-static tip at <b>${fmt(s.tip_lat_g, 2)} g</b> lateral (${fmt(s.side_slope_deg, 0)}° side slope), ${fmt(s.tip_long_g, 2)} g longitudinal. The limiter runs at ${P.a_lat_g} g — ${fmt(s.margin_vs_tip, 1)}× under the threshold. Stop from 8 km/h in ${fmt(s.stop_dist_m, 1)} m at 0.30 g.`;
+    $('#turn-table').innerHTML = `<tr><th class="n">radius m</th><th class="n">cap km/h</th></tr>` + D.v_by_radius.map(([r, v]) => `<tr><td class="n">${fmt(r, 1)}</td><td class="n">${fmt(v * 3.6, 1)}</td></tr>`).join('');
+    const a = D.axle;
+    $('#axle-text').innerHTML = `At 2.5 g the wheel carries ${fmt(a.F_N, 0)} N on a 45 mm cantilever: ${fmt(a.M_Nm, 1)} N·m bending plus 35 N·m peak torque → ${fmt(a.vm_MPa, 0)} MPa von Mises on the 12 mm axle. <b>SF ${fmt(a.sf, 2)}</b> against an <em>assumed</em> 785 MPa yield (target ${a.sf_target}). Verify per motor or clamp both sides.`;
+    const maxR = Math.max(...D.energy.map(e => e.range_km));
+    $('#range-bars').innerHTML = D.energy.map(e => `<div class="row"><span>${e.surface} · ${fmt(e.grade * 100, 0)} %</span><div class="b"><i class="${e.torque_ok && e.power_ok ? '' : 'flag'}" style="width:${(e.range_km / maxR * 100).toFixed(1)}%"></i></div><span class="n">${fmt(e.range_km, 1)} km</span></div>`).join('');
+  })();
+
+  // ---------- rating calculator
+  (function rating() {
+    const rc = $('#rc'), sw = $('#swap'), out = $('#rating-out');
+    const kg = c => P.classes[c];
+    function render() {
+      const cls = rc.value, cl = C[cls];
+      let parts = [['Frame tubes', cls], ['Joiners', cls], ['Cords', cls], ['Seat', cls], ['Wheel FL', cls], ['Wheel FR', cls], ['Wheel RL', cls], ['Wheel RR', sw.value || cls]];
+      const veh = parts.reduce((m, p) => kg(p[1]) < kg(m) ? p[1] : m, 'PS-150');
+      const mode = kg(veh) < kg(cls) ? 'crawl' : 'run';
+      const w2 = cl.frame.LC2.worst, w3 = cl.frame.LC3.worst;
+      let h = `<table><tr><th>Check at ${cls} (${kg(cls)} kg payload)</th><th class="n">SF</th><th class="n">target</th><th></th></tr>`;
+      const row = (n, v, t) => `<tr><td>${n}</td><td class="n">${fmt(v, 2)}</td><td class="n">${t}</td><td class="${v >= t ? 'pass' : 'fail'}">${v >= t ? 'pass' : 'FAIL'}</td></tr>`;
+      h += row('Tube buckling, LC2', w2.tube_sf_b, P.sf.tube) + row('Cord, LC2', w2.cord_sf, P.sf.cord) + row('Seat edge, LC2', w2.fabric_sf, P.sf.fabric) + row('Cord, LC3 lateral', w3.cord_sf, P.sf.cord) + row('Axle (assumed steel)', cl.axle.sf, P.sf.axle);
+      h += `<tr><td>Static deflection, LC1</td><td class="n">${fmt(cl.frame.LC1.max_d_mm, 1)} mm</td><td class="n">≤ 20</td><td class="${cl.frame.LC1.max_d_mm <= 20 ? 'pass' : 'fail'}">${cl.frame.LC1.max_d_mm <= 20 ? 'pass' : 'FAIL'}</td></tr></table>`;
+      h += `<p style="margin-top:12px">Parts on the vehicle: ${parts.map(p => `<span class="tag ${kg(p[1]) < kg(cls) ? 'flag' : ''}">${p[0]} ${p[1]}</span>`).join(' ')}</p>`;
+      h += `<p><b>Vehicle rating = min(parts) = ${veh}.</b> Rider class ${cls} → firmware mode <span class="tag ${mode === 'run' ? 'ok' : 'flag'}">${mode}</span>${mode === 'crawl' ? ' (2 km/h cap until the low-rated part is replaced)' : ''}.</p>`;
+      out.innerHTML = h;
+    }
+    rc.onchange = sw.onchange = render; render();
+  })();
+
+  // ---------- module and mass bars, segments
+  (function bars() {
+    const mb = P.module_breakdown, mx = Math.max(...Object.values(mb));
+    $('#module-breakdown').innerHTML = Object.entries(mb).map(([k, v]) => `<div class="row"><span>${k}</span><div class="b"><i style="width:${(v / mx * 100).toFixed(1)}%"></i></div><span class="n">${fmt(v, 2)} kg</span></div>`).join('');
+    const m = P.mass_budget, lim = PK.limit_kg;
+    let cum = 0, h = '';
+    for (const [k, v] of Object.entries(m)) { cum += v; h += `<div class="row"><span>${k}</span><div class="b"><i style="width:${(v / lim * 100).toFixed(1)}%"></i></div><span class="n">${fmt(v, 2)}</span></div>`; }
+    h += `<div class="row" style="margin-top:6px;font-weight:700"><span>total</span><div class="b"><i class="flag" style="width:${(cum / lim * 100).toFixed(1)}%"></i></div><span class="n">${fmt(cum, 2)}</span></div>`;
+    h += `<div class="row"><span>limit (50 lb)</span><div class="b" style="background:transparent;border:1px dashed var(--ink-3)"></div><span class="n">${fmt(lim, 2)}</span></div>`;
+    $('#mass-bars').innerHTML = h;
+    $('#seg-table').innerHTML = '<tr><th>Tube</th><th class="n">length</th><th class="n">segments</th></tr>' + PK.segments.map(s => `<tr><td>${s[0]}</td><td class="n">${fmt(s[1], 0)} mm</td><td class="n">${s[2]} × ${fmt(s[3], 0)}</td></tr>`).join('');
+  })();
+
+  // ---------- PS-Bus simulator (port of firmware/sim/psbus_sim.py)
+  (function sim() {
+    const TIMEOUT = P.comms_timeout_ms / 1000, RAMP = 0.3, CAP = { run: P.v_max_kmh, crawl: 2, stop: 0 }, KG = P.classes;
+    const DT = 0.02; let now = 0;
+    const log = $('#sim-log'), logs = [];
+    function L(msg, cls) { logs.push(`<div><span class="t">${now.toFixed(2)}s</span> <span class="${cls || ''}">${msg}</span></div>`); if (logs.length > 200) logs.shift(); log.innerHTML = logs.join(''); log.scrollTop = log.scrollHeight; }
+    const bus = { subs: [], pub(t, m) { for (const [p, cb] of this.subs) if (match(p, t)) cb({ t, ts: now, ...m }); }, sub(p, cb) { this.subs.push([p, cb]); return cb; }, unsub(cbs) { this.subs = this.subs.filter(([p, cb]) => !cbs.includes(cb)); } };
+    const match = (p, t) => { const a = p.split('/'), b = t.split('/'); return a.length === b.length && a.every((x, i) => x === '+' || x === b[i]); };
+    const SIDE = { FL: 'left', RL: 'left', FR: 'right', RR: 'right', CL: 'left', CR: 'right' };
+    let serialN = 1;
+    class Wheel {
+      constructor(rating) { this.serial = 'W-' + String(serialN++).padStart(4, '0'); this.rating = rating; this.cmd = 0; this.cmdTs = -1e9; this.seq = -1; this.v = 0; this.mode = 'stop'; this.estop = false; this.nextStatus = 0; this.nextHello = 0; this.alive = false; this.cbs = []; this.stopReason = null; }
+      plug(dock) { this.dock = dock; this.alive = true; this.side = SIDE[dock]; this.cmdTs = -1e9; this.nextHello = now;
+        this.cbs = [bus.sub('ctrl/tread/' + this.side, m => { if (typeof m.v !== 'number' || m.v < -1 || m.v > 1) return; this.cmd = m.v; this.cmdTs = m.ts; }),
+          bus.sub('veh/mode', m => this.mode = m.mode), bus.sub('veh/estop', m => this.estop = m.active)]; }
+      unplug() { this.alive = false; bus.unsub(this.cbs); this.cbs = []; this.dock = null; }
+      tick() { if (!this.alive) return;
+        if (now >= this.nextHello) { bus.pub(`node/${this.serial}/hello`, { kind: 'wheel', dock: this.dock, rating: this.rating }); this.nextHello = now + 1; }
+        const cap = CAP[this.mode] || 0, timedOut = now - this.cmdTs > TIMEOUT;
+        let target = 0; this.stopReason = null;
+        if (this.estop) this.stopReason = 'estop'; else if (timedOut) this.stopReason = 'timeout'; else if (cap === 0) this.stopReason = 'mode'; else target = this.cmd * cap;
+        const step = 8 * DT / (Math.abs(target) < Math.abs(this.v) ? RAMP : 0.5);
+        this.v += Math.max(-step, Math.min(step, target - this.v)); if (Math.abs(this.v) < 1e-3) this.v = 0;
+        if (now >= this.nextStatus) { bus.pub(`wheel/${this.dock}/status`, { serial: this.serial, v_kmh: this.v, stop: this.stopReason }); this.nextStatus = now + 0.1; } }
+    }
+    class Control {
+      constructor(serial, input, fn) { this.serial = serial; this.input = input; this.fn = fn; this.seq = 0; this.next = 0; this.alive = false; this.nextHello = 0; }
+      plug(dock) { this.dock = dock; this.side = SIDE[dock]; this.alive = true; this.nextHello = now; }
+      unplug() { this.alive = false; }
+      tick() { if (!this.alive) return; if (now >= this.nextHello) { bus.pub(`node/${this.serial}/hello`, { kind: 'control', dock: this.dock, rating: 'PS-150' }); this.nextHello = now + 1; }
+        if (now >= this.next) { bus.pub('ctrl/tread/' + this.side, { v: this.fn(), seq: ++this.seq, src: this.serial, input: this.input }); this.next = now + DT; } }
+    }
+    const sup = { rider: 'PS-125', parts: {}, status: {}, mode: 'stop', estop: false, frameRating: 'PS-125',
+      init() { bus.sub('node/+/hello', m => { const s = m.t.split('/')[1]; for (const k of Object.keys(this.parts)) if (this.parts[k].dock === m.dock && k !== s) delete this.parts[k]; this.parts[s] = { kind: m.kind, dock: m.dock, rating: m.rating, ts: m.ts }; });
+        bus.sub('wheel/+/status', m => this.status[m.t.split('/')[1]] = m.ts); },
+      tick() { const live = Object.values(this.parts).filter(p => now - p.ts <= 2.5); const wheels = new Set(live.filter(p => p.kind === 'wheel').map(p => p.dock));
+        const ok = ['FL', 'FR', 'RL', 'RR'].every(d => wheels.has(d) && now - (this.status[d] ?? -1e9) <= 0.25);
+        let rating = live.concat([{ rating: this.frameRating }]).reduce((m, p) => KG[p.rating] < KG[m] ? p.rating : m, 'PS-150');
+        const mode = this.estop ? 'stop' : !ok ? 'stop' : KG[rating] < KG[this.rider] ? 'crawl' : 'run';
+        if (mode !== this.mode) { L(`supervisor: mode ${this.mode} → <b>${mode}</b> (wheels ${[...wheels].sort().join(',') || 'none'}, vehicle rating ${rating}, rider ${this.rider})`, 'm'); this.mode = mode; }
+        this.rating = rating; bus.pub('veh/mode', { mode, rating, rider_class: this.rider }); bus.pub('veh/estop', { active: this.estop }); } };
+    sup.init();
+    const tl = $('#tl'), tr = $('#tr');
+    const cl = new Control('C-0007', 'lever', () => tl.value / 100), cr = new Control('C-0011', 'pedal', () => tr.value / 100);
+    const wheels = { FL: new Wheel('PS-125'), FR: new Wheel('PS-125'), RL: new Wheel('PS-125'), RR: new Wheel('PS-125') };
+    for (const d in wheels) wheels[d].plug(d); cl.plug('CL'); cr.plug('CR');
+    let spare = null;
+    const wdiv = $('#sim-wheels');
+    wdiv.innerHTML = ['FL', 'FR', 'RL', 'RR'].map(d => `<div class="wheel" id="w-${d}"><span class="pos">${d}</span> <span class="ser"></span><div class="bar"><i></i></div><span class="st"></span></div>`).join('');
+    L('boot: 4 wheel modules + lever (CL) + pedal (CR) + supervisor; rider class PS-125');
+    $('#b-pull').onclick = () => { if (!wheels.RR.alive) return; L(`HOT-SWAP: wheel RR (${wheels.RR.serial}) pulled out`, 'e'); wheels.RR.unplug(); };
+    const insert = r => { if (wheels.RR.alive) { L('dock RR is occupied — pull the module first', 'e'); return; } spare = new Wheel(r); spare.plug('RR'); wheels.RR = spare; L(`spare ${spare.serial} rated ${r} pushed into dock RR; it reads the dock ID and becomes RR`); };
+    $('#b-ins100').onclick = () => insert('PS-100'); $('#b-ins125').onclick = () => insert('PS-125');
+    $('#b-cut').onclick = () => { if (!cl.alive) return; cl.unplug(); L('FAULT: left control cable unplugged (CL goes silent)', 'e'); $('#sim-cl').className = 'tag flag'; $('#sim-cl').textContent = 'CL unplugged'; };
+    $('#b-plug').onclick = () => { if (cl.alive) return; cl.plug('CL'); L('left control re-plugged into dock CL'); $('#sim-cl').className = 'tag ok'; $('#sim-cl').textContent = 'CL lever'; };
+    $('#b-estop').onclick = () => { sup.estop = !sup.estop; L(`e-stop ${sup.estop ? 'PRESSED' : 'released'}`, 'e'); $('#b-estop').textContent = sup.estop ? 'release e-stop' : 'e-stop'; };
+    tl.oninput = () => $('#tlv').textContent = (tl.value / 100).toFixed(2); tr.oninput = () => $('#trv').textContent = (tr.value / 100).toFixed(2);
+    let visible = true; const io = new IntersectionObserver(e => visible = e[0].isIntersecting, { rootMargin: '200px' }); io.observe($('#sim'));
+    setInterval(() => { if (!visible) return; now += DT; cl.tick(); cr.tick(); for (const d in wheels) wheels[d].tick(); sup.tick();
+      for (const d in wheels) { const w = wheels[d], el = $('#w-' + d); el.classList.toggle('gone', !w.alive); $('.ser', el).textContent = w.alive ? `${w.serial} · ${w.rating}` : 'empty dock'; $('.bar i', el).style.width = (Math.abs(w.v) / P.v_max_kmh * 100) + '%'; $('.st', el).textContent = w.alive ? `${w.v.toFixed(1)} km/h${w.stopReason ? ' · stop: ' + w.stopReason : ''}` : '—'; }
+      const m = $('#sim-mode'); m.textContent = sup.mode; m.className = 'tag ' + (sup.mode === 'run' ? 'ok' : 'flag'); $('#sim-rating').textContent = sup.rating || '—';
+    }, DT * 1000);
+  })();
+})();
+
+</script>
+</body>
+</html>

@@ -1,0 +1,222 @@
+{
+  "$schema": "https://json-schema.org/draft/2020-12/schema",
+  "$id": "https://playasprawler.outright.io/schemas/psbus-message.schema.json",
+  "title": "PS-Bus v1 message",
+  "description": "One JSON object per UDP datagram on 239.77.83.1:7783. 't' is the topic, 'ts' the sender clock in seconds.",
+  "type": "object",
+  "required": [
+    "t",
+    "ts"
+  ],
+  "properties": {
+    "t": {
+      "type": "string",
+      "pattern": "^[a-z]+(/[A-Za-z0-9_-]+)+$"
+    },
+    "ts": {
+      "type": "number"
+    }
+  },
+  "oneOf": [
+    {
+      "title": "tread command",
+      "properties": {
+        "t": {
+          "pattern": "^ctrl/tread/(left|right)$"
+        },
+        "v": {
+          "type": "number",
+          "minimum": -1,
+          "maximum": 1
+        },
+        "seq": {
+          "type": "integer",
+          "minimum": 0
+        },
+        "src": {
+          "type": "string"
+        },
+        "input": {
+          "type": "string"
+        },
+        "fault": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "v",
+        "seq",
+        "src"
+      ]
+    },
+    {
+      "title": "wheel status",
+      "properties": {
+        "t": {
+          "pattern": "^wheel/(FL|FR|RL|RR)/status$"
+        },
+        "serial": {
+          "type": "string"
+        },
+        "v_kmh": {
+          "type": "number"
+        },
+        "soc": {
+          "type": "number",
+          "minimum": 0,
+          "maximum": 1
+        },
+        "temp_c": {
+          "type": "number"
+        },
+        "fault": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "stop": {
+          "type": [
+            "string",
+            "null"
+          ],
+          "enum": [
+            "timeout",
+            "estop",
+            "mode",
+            null
+          ]
+        }
+      },
+      "required": [
+        "serial",
+        "v_kmh",
+        "soc"
+      ]
+    },
+    {
+      "title": "hello",
+      "properties": {
+        "t": {
+          "pattern": "^node/[A-Za-z0-9-]+/hello$"
+        },
+        "kind": {
+          "enum": [
+            "wheel",
+            "control",
+            "supervisor",
+            "input",
+            "load",
+            "charger"
+          ]
+        },
+        "dock": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rating": {
+          "enum": [
+            "PS-100",
+            "PS-125",
+            "PS-150"
+          ]
+        },
+        "fw": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "kind",
+        "rating"
+      ]
+    },
+    {
+      "title": "vehicle mode",
+      "properties": {
+        "t": {
+          "const": "veh/mode"
+        },
+        "mode": {
+          "enum": [
+            "run",
+            "crawl",
+            "stop"
+          ]
+        },
+        "rating": {
+          "type": [
+            "string",
+            "null"
+          ]
+        },
+        "rider_class": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "mode"
+      ]
+    },
+    {
+      "title": "e-stop",
+      "properties": {
+        "t": {
+          "const": "veh/estop"
+        },
+        "active": {
+          "type": "boolean"
+        }
+      },
+      "required": [
+        "active"
+      ]
+    },
+    {
+      "title": "light command",
+      "properties": {
+        "t": {
+          "pattern": "^light/[0-9]+/cmd$"
+        },
+        "on": {
+          "type": "boolean"
+        },
+        "pattern": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "on"
+      ]
+    },
+    {
+      "title": "input event",
+      "properties": {
+        "t": {
+          "pattern": "^input/[0-9]+/event$"
+        },
+        "event": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "event"
+      ]
+    },
+    {
+      "title": "log",
+      "properties": {
+        "t": {
+          "const": "veh/log"
+        },
+        "text": {
+          "type": "string"
+        }
+      },
+      "required": [
+        "text"
+      ]
+    }
+  ]
+}
